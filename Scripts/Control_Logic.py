@@ -1,11 +1,17 @@
 #Movement and anti-collision function
 def walk(matrix, player, bcolor, ocolor, scolor, pcolor, ccolor, pressed_btn):
         print("mama")
+<<<<<<< HEAD
         print("Up")
         #UP
         if(pressed_btn=="Up"):
         #With a box 
             
+=======
+        #UP
+        if(pressed_btn=="Up"):
+        #With a box
+>>>>>>> Control
             if(matrix[player.current_x][player.current_y-1].cget("bg")==ccolor): ## Checks to see if there's any box above
                 if (matrix[player.current_x][player.current_y-2].cget("bg")==bcolor or matrix[player.current_x][player.current_y-2].cget("bg")==ocolor ): ##Verifies if there are obstacles above(2 Steps)
                     return

@@ -12,7 +12,6 @@ Color_Player="Yellow"   #pcolor
 Color_Chest="Magenta"   #ccolor
 MapOrder=0
 
->>>>>>> Control
 #Sets the main window
 def position(root):
 
@@ -31,7 +30,6 @@ def position(root):
 
 
 #Stores the Button id
->>>>>>> Control
 def btn_pressed(button):
     global Button_Pressed
     Button_Pressed=button

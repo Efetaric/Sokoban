@@ -2,6 +2,14 @@
 In this game the user has to push the boxes on their designed spots.
 It's pretty intuitive and it also has special features like: teleleportation and experience points.
 
+Controls:
+The four purple buttons move the character up, left, down and left;
+When the character is over a teleporter and only 2 teleports are on the map, the user can press the middle button to teleport;
+If there are more than one teleports, there'll appear 3 buttons: one or teleporting and two for picking which telport is being used.
+
+Attention: The chest can't be moved over the teleport. Be careful to no block your acces to the other side.
+
+
 Functions implemented and functions that are being worked on at this moment:
 When the game is opened two buttons appear: one is for learning how to play the game and one is for starting the game normally;
 The user can move the character up, down, left and right;

@@ -2,7 +2,6 @@ from tkinter import *
 import Maps 
 import Control_Logic
 
-Button_Pressed="No_Button_Pressed"
 map_matrix=[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]] #This contains the map (it turns into a 15x15 matrix)
 Color_Border="Black"    #bcolor
 Color_Obstacle="Midnightblue"   #ocolor 
@@ -10,7 +9,9 @@ Color_Space="Grey"      #scolor
 Color_Goal="Lime"       #gcolor
 Color_Player="Yellow"   #pcolor
 Color_Chest="Magenta"   #ccolor
+Color_Transform="Purple" #tcolor
 MapOrder=0
+Stats=5
 
 #Sets the main window
 def position(root):
@@ -30,38 +31,46 @@ def position(root):
 
 
 #Stores the Button id
-def btn_pressed(button):
-    global Button_Pressed
-    Button_Pressed=button
+def btn_pressed(button, player):
+    player.Button_Pressed=button
 
 #start button
-def begin(matrix, player, pcolor):
+def begin(window, matrix, bcolor, ocolor, scolor, gcolor, ccolor, pcolor, tcolor, player, stats):
     #Destroys the current buttons
     Start.destroy()
     Tutorial.destroy()
     #Places the Arena
     canvas= Canvas(root, bg="Black")
-    Maps.Standard_map(canvas, map_matrix, Color_Border, Color_Space) #Make the outter border
-    Maps.Maps_order(Button_Pressed, map_matrix, Color_Obstacle, Color_Space, Color_Goal, player)#Generates the first map (tutorial or not)  
+    Maps.Standard_map(canvas, matrix, bcolor, Color_Space) #Make the outter border
+    Maps.Maps_order(matrix, ocolor, scolor, gcolor, ccolor, player)#Generates the first map (tutorial or not)  
     canvas.pack()
+    #Places the number of left boxes
+    if (User.Button_Pressed=="Tutorial"): #Tutorial always has only one box
+        how_many_left=Label(window, text="1 box left", font=("MS Sans Serif", "15", "bold"), height=1, width=10, bg="Black", fg="Red")
+        how_many_left.place(x=40,y=367)
+    else: 
+        how_many_left=Label(window, text="%d boxes left"%stats, font=("MS Sans Serif", "15", "bold"), height=1, width=10, bg="Black", fg="Red")
+        how_many_left.place(x=40,y=367)
     #Places the buttons
-    Up_btn = Button(bg="Purple", width = '5', height = '1', command=lambda: [btn_pressed("Up"), Control_Logic.walk(matrix, player, Color_Border, Color_Obstacle, Color_Space, Color_Player, Color_Chest, Button_Pressed)])
+    Up_btn = Button(bg="Purple", width = '5', height = '1', command=lambda: [btn_pressed("Up", player), Control_Logic.walk(matrix, player, bcolor, ocolor, scolor, pcolor, ccolor, gcolor, tcolor, User.Button_Pressed, Stats, how_many_left)])
     Up_btn.pack(side="top")
-    Left_btn = Button(bg="Purple", width = '5', height = '1', command=lambda: [btn_pressed("Left"), Control_Logic.walk(matrix, player, Color_Border, Color_Obstacle, Color_Space, Color_Player, Color_Chest, Button_Pressed)])
+    Left_btn = Button(bg="Purple", width = '5', height = '1', command=lambda: [btn_pressed("Left", player), Control_Logic.walk(matrix,  player, bcolor, ocolor, scolor, pcolor, ccolor, gcolor, tcolor, User.Button_Pressed, Stats, how_many_left)])
     Left_btn.place(x=182,y=370)
-    Down_btn = Button(bg="Purple", width = '5', height = '1', command=lambda: [btn_pressed("Down"), Control_Logic.walk(matrix, player, Color_Border, Color_Obstacle, Color_Space, Color_Player, Color_Chest, Button_Pressed)])
+    Down_btn = Button(bg="Purple", width = '5', height = '1', command=lambda: [btn_pressed("Down", player), Control_Logic.walk(matrix,  player, bcolor, ocolor, scolor, pcolor, ccolor, gcolor, tcolor, User.Button_Pressed, Stats, how_many_left)])
     Down_btn.pack(side="bottom")    
-    Right_btn = Button(bg="Purple", width = '5', height = '1', command=lambda: [btn_pressed("Right"), Control_Logic.walk(matrix, player, Color_Border, Color_Obstacle, Color_Space, Color_Player, Color_Chest, Button_Pressed)])
+    Right_btn = Button(bg="Purple", width = '5', height = '1', command=lambda: [btn_pressed("Right", player), Control_Logic.walk(matrix,  player, bcolor, ocolor, scolor, pcolor, ccolor, gcolor, tcolor, User.Button_Pressed, Stats, how_many_left)])
     Right_btn.place(x=270,y=370)
     #Places the player
     matrix[player.current_x][player.current_y].config(bg=pcolor)
     
 
 class Player:
-    def __init__(self, level, current_x, current_y):
+    def __init__(self, level, current_x, current_y, step_over, Button_Pressed):
         self.level = level
         self.current_x = current_x
         self.current_y = current_y
+        self.step_over = step_over
+        self.Button_Pressed = Button_Pressed
 
 ######################################################################
 
@@ -71,13 +80,13 @@ position(root)
 root.configure(background="Darkgrey")
 
 
-#m1= Maps.tutorial_Map1(map_matrix, Color_Obstacle, Color_Space, Color_Goal)
-#Game controls
-User = Player(level=1,current_x=1,current_y=2)
-Tutorial = Button(text="Tutorial", font=("Comic Sans", 20),bg="Green", width = '10', height = '1', command=lambda:[btn_pressed("Tutorial"), begin(map_matrix, User, Color_Player)])
+User = Player(level=1,current_x=1,current_y=2, step_over=0, Button_Pressed='No_Button_Pressed')
+#Tutorial and Start buttons
+Tutorial = Button(text="Tutorial", font=("Comic Sans", 20),bg="Green", width = '10', height = '1', command=lambda:[btn_pressed("Tutorial", User), begin(root, map_matrix, Color_Border, Color_Obstacle, Color_Space, Color_Goal, Color_Chest ,Color_Player, Color_Transform, User, Stats)])
 Tutorial.place(x=165,y=20)
-Start = Button(text="Start", font=("Comic Sans", 20),bg="Green", width = '10', height = '1', command=lambda:[btn_pressed("Start"), begin(map_matrix, User, Color_Player)])
+Start = Button(text="Start", font=("Comic Sans", 20),bg="Green", width = '10', height = '1', command=lambda:[btn_pressed("Start", User), begin(root, map_matrix,Color_Border, Color_Obstacle, Color_Space, Color_Goal, Color_Chest, Color_Player, Color_Transform, User, Stats)])
 Start.place(x=165,y=100)
+
 
 root.mainloop()
 

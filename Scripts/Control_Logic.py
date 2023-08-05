@@ -1,161 +1,69 @@
-#Movement and anti-collision function
-def walk(matrix, player, bcolor, ocolor, scolor, pcolor, ccolor, gcolor, tcolor, pressed_btn, stats, hml):
+#Movement and anti-collision function (it encapsulates everything from this module)
+def walk(matrix, player, bcolor, ocolor, scolor, pcolor, ccolor, gcolor, tcolor, pressed_btn, map, hml):
         print(pressed_btn)
-#UP
-        if(pressed_btn=="Up"):
-        #With a box
-            if(matrix[player.current_x][player.current_y-1].cget("bg")==ccolor): ## Checks to see if there's any box above
-                if (matrix[player.current_x][player.current_y-2].cget("bg")==bcolor or matrix[player.current_x][player.current_y-2].cget("bg")==ocolor ): ##Verifies if there are obstacles above(2 Steps)
-                    return
-                elif (matrix[player.current_x][player.current_y-2].cget("bg")==gcolor):
+        match pressed_btn:
+            case "Up":
+                direction(matrix, player, 0, -1, 0, -1, bcolor, ocolor, scolor, ccolor, gcolor, tcolor, map, hml)
+            case "Left":
+                direction(matrix, player, -1, 0, -1, 0, bcolor, ocolor, scolor, ccolor, gcolor, tcolor, map, hml)
+            case "Down":
+                direction(matrix, player, 0, 1, 0, 1, bcolor, ocolor, scolor, ccolor, gcolor, tcolor, map, hml)
+            case "Right":
+                direction(matrix, player, 1, 0, 1, 0, bcolor, ocolor, scolor, ccolor, gcolor, tcolor, map, hml)
 
-                    stats -= 1
-                    boxes_left(stats, hml)
-                    #Stores and changes the stepped over square
-                    Goal_or_Space(matrix, player, scolor, gcolor)
-                    step_over(matrix, player, scolor, gcolor, pressed_btn, stats, hml)
-                    matrix[player.current_x][player.current_y-2].config(bg=tcolor) ##Moves the box upside
-                    player.current_y -= 1
-                else:
-                    stats -= 1
-                    boxes_left(stats, hml)
-                    #Stores and changes the stepped over square
-                    Goal_or_Space(matrix, player, scolor, gcolor)
-                    step_over(matrix, player, scolor, gcolor, pressed_btn, stats, hml)
-                    matrix[player.current_x][player.current_y-2].config(bg=ccolor) ##Moves the box upside
-                    player.current_y -= 1
-                    
-        #Without a box 
-            elif (matrix[player.current_x][player.current_y-1].cget("bg")==bcolor or matrix[player.current_x][player.current_y-1].cget("bg")==ocolor ): ##Verifies if there are obstacles above(1 Step)
-                return
-            else:
-                #Store and changes the stepped over square 
-                Goal_or_Space(matrix, player, scolor, gcolor)
-                step_over(matrix, player, scolor, gcolor, pressed_btn, stats, hml)##Turns the old position into free space/goal area
-                player.current_y -= 1
-        
-
-#Left   
-        elif(pressed_btn=="Left"):
-        #With a box 
-            if (matrix[player.current_x-1][player.current_y].cget("bg")==ccolor):
-                if (matrix[player.current_x-2][player.current_y].cget("bg")==bcolor or matrix[player.current_x-2][player.current_y].cget("bg")==ocolor): ##Verifies if there are obstacles to the left side(2 Steps)
-                    return
-                else:
-                    #Store and changes the stepped over square 
-                    Goal_or_Space(matrix, player, scolor, gcolor)
-                    step_over(matrix, player, scolor, gcolor, pressed_btn, stats, hml)
-                    #Counts the boxes placed over the goal area
-                    if (matrix[player.current_x-2][player.current_y].cget("bg")==gcolor): 
-                        stats -= 1
-                        boxes_left(stats, hml)
-
-                    matrix[player.current_x-2][player.current_y].config(bg=ccolor) ##Moves the box to the left
-                    player.current_x -= 1
-        #Without a box
-            elif (matrix[player.current_x-1][player.current_y].cget("bg")==bcolor or matrix[player.current_x-1][player.current_y].cget("bg")==ocolor): ##Verifies if there are obstacles to the left side(1 Step)
-                return
-            else:
-                #Store and changes the stepped over square 
-                #Stores and changes the stepped over square
-                Goal_or_Space(matrix, player, scolor, gcolor)
-                step_over(matrix, player, scolor, gcolor, pressed_btn, stats, hml)
-                player.current_x -= 1
-        
-
-
-#Down
-        elif(pressed_btn=="Down"):
-        #With a box
-            if(matrix[player.current_x][player.current_y+1].cget("bg")==ccolor): ## Checks to see if there's any box above
-                if (matrix[player.current_x][player.current_y+2].cget("bg")==bcolor or matrix[player.current_x][player.current_y+2].cget("bg")==ocolor ): ##Verifies if there are obstacles bellow(2 Steps)
-                    return
-                else:
-                    #Store and changes the stepped over square 
-                    Goal_or_Space(matrix, player, scolor, gcolor)
-                    step_over(matrix, player, scolor, gcolor, pressed_btn, stats, hml)
-                    #Counts the boxes placed over the goal area
-                    if (matrix[player.current_x][player.current_y+2].cget("bg")==gcolor): 
-                        stats -= 1
-                        boxes_left(stats, hml)
-
-                    matrix[player.current_x][player.current_y+2].config(bg=ccolor) ##Moves the box bellow
-                    player.current_y += 1
-        #Without a box 
-            elif (matrix[player.current_x][player.current_y+1].cget("bg")==bcolor or matrix[player.current_x][player.current_y+1].cget("bg")==ocolor ): ##Verifies if there are obstacles bellow(1 Step)
-                return
-            else:
-                #Store and changes the stepped over square 
-                Goal_or_Space(matrix, player, scolor, gcolor)
-                step_over(matrix, player, scolor, gcolor, pressed_btn, stats, hml)
-                player.current_y += 1
-        
-
-
-#Right   
-        elif(pressed_btn=="Right"):
-        #With a box 
-            if (matrix[player.current_x+1][player.current_y].cget("bg")==ccolor):
-                if (matrix[player.current_x+2][player.current_y].cget("bg")==bcolor or matrix[player.current_x+2][player.current_y].cget("bg")==ocolor): ##Verifies if there are obstacles to the right side(2 Steps)
-                    return
-                else:
-                    #Store and changes the stepped over square 
-                    Goal_or_Space(matrix, player, scolor, gcolor)
-                    step_over(matrix, player, scolor, gcolor, pressed_btn, stats, hml)
-                    #Counts the boxes placed over the goal area
-                    if (matrix[player.current_x+2][player.current_y].cget("bg")==gcolor): 
-                        stats -= 1
-                        boxes_left(stats, hml)
-
-                    matrix[player.current_x+2][player.current_y].config(bg=ccolor) ##Moves the box to the right
-                    player.current_x += 1
-        #Without a box
-            elif (matrix[player.current_x+1][player.current_y].cget("bg")==bcolor or matrix[player.current_x+1][player.current_y].cget("bg")==ocolor): ##Verifies if there are obstacles to the right side(1 Step)
-                return
-            else:
-                #Store and changes the stepped over square 
-                Goal_or_Space(matrix, player, scolor, gcolor)
-                step_over(matrix, player, scolor, gcolor, pressed_btn, stats, hml)
-                player.current_x += 1
-        
-        print(stats)
+        print(map.Left_Spots)
         matrix[player.current_x][player.current_y].config(bg=pcolor)
-        boxes_left(stats, hml)
+        boxes_left(map, hml)
 
+
+def direction(matrix, player, X_coordonate, Y_coordonate, X_box, Y_box, bcolor, ocolor, scolor, ccolor, gcolor, tcolor, map, hml):
+    #with a box
+    if(matrix[player.current_x+(X_coordonate) ][player.current_y+(Y_coordonate)].cget("bg")==ccolor 
+        or matrix[player.current_x+(X_coordonate) ][player.current_y+(Y_coordonate)].cget("bg")==tcolor): ## Checks to see if there's any box ahead
+        step_over_with_box(matrix, player, X_coordonate, Y_coordonate, X_box, Y_box,  bcolor, ocolor, scolor, ccolor, gcolor, tcolor, map, hml)
+
+    #Without a box 
+    elif (matrix[player.current_x+(X_coordonate)][player.current_y+(Y_coordonate)].cget("bg")==bcolor or matrix[player.current_x+(X_coordonate)][player.current_y+(Y_coordonate)].cget("bg")==ocolor ): ##Verifies if there are obstacles (1 Step)
+            return
+    else:
+        Goal_or_Space(matrix, player, scolor, gcolor)
+        step_over(matrix, player, X_coordonate, Y_coordonate, gcolor, tcolor)
+        player_position(player, X_coordonate, Y_coordonate)
+
+
+#The new position of the player
+def player_position(player, X_coordonate, Y_coordonate): 
+    player.current_x = player.current_x + (X_coordonate)
+    player.current_y = player.current_y + (Y_coordonate)
 
 
 ##Stores the type of area that's under the user (without a box)
-def step_over(matrix, player, scolor, gcolor, pressed_btn, stats, hml):
-
-    #Without box
-    if (pressed_btn=="Up" and matrix[player.current_x][player.current_y-1].cget("bg")==gcolor):
+def step_over(matrix, player, X_coordonate, Y_coordonate, gcolor, tcolor):
+    if (matrix[player.current_x+(X_coordonate)][player.current_y+(Y_coordonate)].cget("bg")==gcolor 
+        or matrix[player.current_x+(X_coordonate)][player.current_y+(Y_coordonate)].cget("bg")==tcolor):#
         player.step_over=1
-    elif (pressed_btn=="Up" and matrix[player.current_x][player.current_y-1].cget("bg")!=gcolor):
-        player.step_over=0
-
-
-    elif (pressed_btn=="Left" and matrix[player.current_x-1][player.current_y].cget("bg")==gcolor):
-        player.step_over=1
-    elif (pressed_btn=="Left" and matrix[player.current_x-1][player.current_y].cget("bg")!=gcolor):
-        player.step_over=0
-
-    
-    elif (pressed_btn=="Down" and matrix[player.current_x][player.current_y+1].cget("bg")==gcolor):
-        player.step_over=1
-    elif (pressed_btn=="Down" and matrix[player.current_x][player.current_y+1].cget("bg")!=gcolor):
-        player.step_over=0
-
-
-    elif (pressed_btn=="Right" and matrix[player.current_x+1][player.current_y].cget("bg")==gcolor):
-        player.step_over=1
-    elif (pressed_btn=="Right" and matrix[player.current_x+1][player.current_y].cget("bg")!=gcolor):
+    elif (matrix[player.current_x+(X_coordonate)][player.current_y+(Y_coordonate)].cget("bg")!=gcolor):
         player.step_over=0
     print("step %d"%player.step_over)
+    
 
-def step_over_with_box(matrix, player, scolor, gcolor, pressed_btn, stats, hml):
-        #With a box
-   if (pressed_btn=="Up" and matrix[player.current_x][player.current_y-1].cget("bg")==gcolor):
-        player.step_over=1
+def step_over_with_box(matrix, player, X_coordonate, Y_coordonate, X_box, Y_box,  bcolor, ocolor, scolor, ccolor, gcolor, tcolor, map, hml):
+    #With a box
+    if (matrix[player.current_x+(X_coordonate+X_box)][player.current_y+(Y_coordonate+Y_box)].cget("bg")==bcolor 
+        or matrix[player.current_x+(X_coordonate+X_box)][player.current_y+(Y_coordonate+Y_box)].cget("bg")==ocolor): ##Verifies if there are obstacles ahead(2 Steps)
+        return
+    else:
+        boxes_left(map, hml)
+        Goal_or_Space(matrix, player, scolor, gcolor)
+        step_over(matrix, player, X_coordonate, Y_coordonate, gcolor, tcolor)
+        if (matrix[player.current_x+(X_coordonate+X_box)][player.current_y+(Y_coordonate+Y_box)].cget("bg")==gcolor):
+            matrix[player.current_x+(X_coordonate+X_box)][player.current_y+(Y_coordonate+Y_box)].config(bg=tcolor) ##Moves the box inside goal area and transforms it
+            map.Left_Spots -= 1 #Decreases the goal slots area when a box is over it
+        else:
+            if (matrix[player.current_x+(X_box)][player.current_y+(Y_box)].cget("bg")==tcolor):
+                map.Left_Spots += 1 #Increase the goal area if the player pushes a box out of it
+            matrix[player.current_x+(X_coordonate+X_box)][player.current_y+(Y_coordonate+Y_box)].config(bg=ccolor) ##Moves the box on empty space
+        player_position(player, X_coordonate, Y_coordonate)
 
 ##Stores the type of area that's under the user and the box
 def Goal_or_Space(matrix, player, scolor, gcolor):
@@ -167,11 +75,11 @@ def Goal_or_Space(matrix, player, scolor, gcolor):
 
 
 #this function changes the number of boxes left
-def boxes_left(stats, hml):
-    if (stats > 1):
-        hml.config(text="%d boxes left"%stats)
+def boxes_left(map, hml):
+    if (map.Left_Spots > 1):
+        hml.config(text="%d boxes left"%map.Left_Spots)
     
-    elif (stats == 1):
+    elif (map.Left_Spots == 1):
         hml.config(text="1 box left")
 
     else:

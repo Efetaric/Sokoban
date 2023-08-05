@@ -1,10 +1,13 @@
 from tkinter import *
 #First tutorial map or first start map
-def Maps_order(matrix, ocolor, scolor, gcolor, ccolor, player):
+def Maps_order(window, matrix, bcolor, ocolor, scolor, gcolor, ccolor, pcolor, player, map):
+    Standard_map(window, matrix, bcolor, scolor)
     if (player.Button_Pressed=="Tutorial"):    
-        tutorial_Map1(matrix, ocolor, scolor, gcolor, ccolor, player)
+        tutorial_Map1(matrix, ocolor, scolor, gcolor, ccolor, player, map)
+    matrix[player.current_x][player.current_y].config(bg=pcolor) #Places the player
+    map.Left_Spots=map.Boxes
 
-#Standard map 
+#Standard map - generates the borders and the empty space
 def Standard_map(window, matrix, bcolor, scolor):
     columns=[0]*15
     for j in range(0,15):
@@ -18,9 +21,10 @@ def Standard_map(window, matrix, bcolor, scolor):
     matrix[7][5].config(bg="Magenta")
     
 #First tutorial map
-def tutorial_Map2(matrix, ocolor, scolor, gcolor, ccolor, player):
+def tutorial_Map2(matrix, ocolor, scolor, gcolor, ccolor, player, map):
     player.current_x=5
     player.current_y=7
+    map.Boxes=1
     for j in range(1,14):
         for i in range (1,14): 
             if (j==7 and 4<i<10):
@@ -30,9 +34,10 @@ def tutorial_Map2(matrix, ocolor, scolor, gcolor, ccolor, player):
     matrix[9][7].config(bg=gcolor)
     matrix[8][7].config(bg=ccolor) 
 
-def tutorial_Map1(matrix, ocolor, scolor, gcolor, ccolor, player):
+def tutorial_Map1(matrix, ocolor, scolor, gcolor, ccolor, player, map):
     player.current_x=5
     player.current_y=7
+    map.Boxes=8
     for j in range(1,14):
         for i in range (1,14): 
             if ((j==5 and 2<i<12) or (j==6 and 2<i<12) or (j==7 and 2<i<12) or (j==8 and 2<i<12) or (j==9 and 2<i<12)):

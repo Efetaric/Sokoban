@@ -28,29 +28,55 @@ def btn_pressed(button, player):
 
 #Main function
 def main(window, matrix, player, map):
-    #Destroys the current buttons
-    Start.destroy()
-    Tutorial.destroy()
     #Places the Arena
     canvas= Canvas(root, bg="Black")
-    Maps.Maps_order(canvas, matrix, player, map)#Generates the first map (tutorial or not)  
+    Maps.Maps_order(canvas, matrix, player, map)#Generates the map
     canvas.pack()
     #Shows on a label how many boxes are left
-    if (User.Button_Pressed=="Tutorial"): #Tutorial always has only one box
+    if (User.Button_Pressed=="Start"): #starts the game
+        current_level=Label(window, text="Level 1", font=("MS Sans Serif", "15", "bold"), height=1, width=10, bg="Black", fg="Yellow")
+        current_level.place(x=40,y=385)
         how_many_left=Label(window, text="1 box left", font=("MS Sans Serif", "15", "bold"), height=1, width=10, bg="Black", fg="Red")
-        how_many_left.place(x=40,y=367)
-    else: 
-        how_many_left=Label(window, text="%d boxes left"%map.Left_Spots, font=("MS Sans Serif", "15", "bold"), height=1, width=10, bg="Black", fg="Red")
-        how_many_left.place(x=40,y=367)
+        how_many_left.place(x=40,y=345)
     #Places the buttons
-    Up_btn = Button(bg="Purple", width = '5', height = '1', command=lambda: [btn_pressed("Up", player), Control_Logic.walk(matrix, player, map, how_many_left)])
+    Up_btn = Button(bg="Purple", width = '5', height = '1', command=lambda: [btn_pressed("Up", player), Control_Logic.walk(matrix, player, map, how_many_left)
+                                                                                ,ON_OFF(map, Up_btn, Left_btn, Down_btn, Right_btn, Next_btn)])
     Up_btn.pack(side="top")
-    Left_btn = Button(bg="Purple", width = '5', height = '1', command=lambda: [btn_pressed("Left", player), Control_Logic.walk(matrix,  player, map, how_many_left)])
+    Left_btn = Button(bg="Purple", width = '5', height = '1', command=lambda: [btn_pressed("Left", player), Control_Logic.walk(matrix, player, map, how_many_left)
+                                                                                ,ON_OFF(map, Up_btn, Left_btn, Down_btn, Right_btn, Next_btn)])
     Left_btn.place(x=182,y=370)
-    Down_btn = Button(bg="Purple", width = '5', height = '1', command=lambda: [btn_pressed("Down", player), Control_Logic.walk(matrix,  player, map, how_many_left)])
+    Down_btn = Button(bg="Purple", width = '5', height = '1', command=lambda: [btn_pressed("Down", player), Control_Logic.walk(matrix, player, map, how_many_left)
+                                                                                ,ON_OFF(map, Up_btn, Left_btn, Down_btn, Right_btn, Next_btn)])
     Down_btn.pack(side="bottom")    
-    Right_btn = Button(bg="Purple", width = '5', height = '1', command=lambda: [btn_pressed("Right", player), Control_Logic.walk(matrix,  player, map, how_many_left)])
+    Right_btn = Button(bg="Purple", width = '5', height = '1', command=lambda: [btn_pressed("Right", player), Control_Logic.walk(matrix, player, map, how_many_left)
+                                                                                ,ON_OFF(map, Up_btn, Left_btn, Down_btn, Right_btn, Next_btn)])
     Right_btn.place(x=270,y=370)
+    #This function goes to the next map and destroys the button
+    Next_btn = Button(bg="Yellow", width = '10', height = '1', command=lambda: [Maps.Maps_order(canvas, matrix, player, map), ON_OFF(map, Up_btn, Left_btn, Down_btn, Right_btn, Next_btn)
+                                                                                ,hml_cl(how_many_left,current_level,player, map)])
+    Next_btn.place(x=360,y=355)
+
+def ON_OFF(map,UP,LEFT,DOWN,RIGHT,NEXT):
+    if(map.Left_Spots==0):
+        UP.config(state=DISABLED, bg="Grey")
+        LEFT.config(state=DISABLED, bg="Grey")
+        DOWN.config(state=DISABLED, bg="Grey")
+        RIGHT.config(state=DISABLED, bg="Grey")
+        NEXT.config(state=NORMAL, bg="Yellow")
+    else:
+        UP.config(state=NORMAL, bg="Purple")
+        LEFT.config(state=NORMAL, bg="Purple")
+        DOWN.config(state=NORMAL, bg="Purple")
+        RIGHT.config(state=NORMAL, bg="Purple")
+        NEXT.config(state=NORMAL, bg="Grey")
+        
+def hml_cl(hml,cl,player,map):
+    cl.config(text="Level: %d"%player.level)
+    if(map.Left_Spots==1):
+        hml.config(text="1 box left")
+    else:
+        hml.config(text="%d boxes left"%map.Left_Spots)
+
 
     
 
@@ -84,10 +110,8 @@ root.configure(background="Darkgrey")
 
 User = Player(level=1,current_x=1,current_y=2, step_over=0, Button_Pressed='No_Button_Pressed')
 Current_Map = Map(Boxes=0, Left_Spots=0, Color_Border="Black", Color_Obstacle="Midnightblue", Color_Space="Grey", Color_Goal="Lime", Color_Player="Yellow", Color_Chest="Magenta", Color_Transform="Purple")
-#Tutorial and Start buttons
-Tutorial = Button(text="Tutorial", font=("Comic Sans", 20),bg="Green", width = '10', height = '1', command=lambda:[btn_pressed("Tutorial", User), main(root, map_matrix, User, Current_Map)])
-Tutorial.place(x=165,y=20)
-Start = Button(text="Start", font=("Comic Sans", 20),bg="Green", width = '10', height = '1', command=lambda:[btn_pressed("Start", User), main(root, map_matrix, User, Current_Map)])
+#Start button
+Start = Button(text="Start", font=("Comic Sans", 20),bg="Green", width = '10', height = '1', command=lambda:[btn_pressed("Start", User), Start.destroy(), main(root, map_matrix, User, Current_Map)])
 Start.place(x=165,y=100)
 
 

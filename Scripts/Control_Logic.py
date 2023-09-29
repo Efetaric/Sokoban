@@ -1,28 +1,32 @@
+from tkinter import *
+import Maps
+
+
 #Movement and anti-collision function (it encapsulates everything from this module)
 def walk(matrix, player, map, hml):
-        print(player.Button_Pressed)
-        match player.Button_Pressed:
-            case "Up":
-                direction(matrix, player, 0, -1, map, hml)
-            case "Left":
-                direction(matrix, player, -1, 0, map, hml)
-            case "Down":
-                direction(matrix, player, 0, 1, map, hml)
-            case "Right":
-                direction(matrix, player, 1, 0, map, hml)
+    print(player.Button_Pressed)
+    match player.Button_Pressed:
+        case "Up":
+            direction(matrix, player, 0, -1, map)
+        case "Left":
+            direction(matrix, player, -1, 0, map)
+        case "Down":
+            direction(matrix, player, 0, 1, map)
+        case "Right":
+            direction(matrix, player, 1, 0, map)
 
-        print(map.Left_Spots)
-        matrix[player.current_x][player.current_y].config(bg=map.Color_Player)
-        boxes_left(map, hml)
-
-
+    print(map.Left_Spots)
+    matrix[player.current_x][player.current_y].config(bg=map.Color_Player)
+    boxes_left(player, map, hml)
 
 
-def direction(matrix, player, X_coordonate, Y_coordonate, map, hml):
+
+
+def direction(matrix, player, X_coordonate, Y_coordonate, map):
     #with a box
     if(matrix[player.current_x+(X_coordonate) ][player.current_y+(Y_coordonate)].cget("bg")==map.Color_Chest 
         or matrix[player.current_x+(X_coordonate) ][player.current_y+(Y_coordonate)].cget("bg")==map.Color_Transform): ## Checks to see if there's any box ahead
-        step_over_with_box(matrix, player, X_coordonate, Y_coordonate, map, hml)
+        step_over_with_box(matrix, player, X_coordonate, Y_coordonate, map)
 
     #Without a box 
     elif (matrix[player.current_x+(X_coordonate)][player.current_y+(Y_coordonate)].cget("bg")==map.Color_Border 
@@ -53,13 +57,12 @@ def step_over(matrix, player, X_coordonate, Y_coordonate, map):
     
 
 
-def step_over_with_box(matrix, player, X_coordonate, Y_coordonate, map, hml):
+def step_over_with_box(matrix, player, X_coordonate, Y_coordonate, map):
     #With a box
     if (matrix[player.current_x+(X_coordonate+X_coordonate)][player.current_y+(Y_coordonate+Y_coordonate)].cget("bg")==map.Color_Border 
         or matrix[player.current_x+(X_coordonate+X_coordonate)][player.current_y+(Y_coordonate+Y_coordonate)].cget("bg")==map.Color_Obstacle): ##Verifies if there are obstacles ahead(2 Steps)
         return
     else:
-        boxes_left(map, hml)
         Goal_or_Space(matrix, player, map)
         step_over(matrix, player, X_coordonate, Y_coordonate, map)
         if (matrix[player.current_x+(X_coordonate+X_coordonate)][player.current_y+(Y_coordonate+Y_coordonate)].cget("bg")==map.Color_Goal):
@@ -83,7 +86,7 @@ def Goal_or_Space(matrix, player, map):
 
 
 #this function changes the number of boxes left
-def boxes_left(map, hml):
+def boxes_left(player,map, hml):
     if (map.Left_Spots > 1):
         hml.config(text="%d boxes left"%map.Left_Spots)
     
@@ -92,3 +95,7 @@ def boxes_left(map, hml):
 
     else:
         hml.config(text="No boxes left")
+        player.level+=1
+
+
+        

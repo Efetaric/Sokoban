@@ -1,13 +1,15 @@
 from tkinter import *
 
-
-#this launches the first tutorial map or first start map and sets the order ov the maps
+#this launches the first/current map and sets the order of the maps
 def Maps_order(window, matrix, player, map):
     Standard_map(window, matrix, map)
-    if (player.Button_Pressed=="Tutorial"):    
-        tutorial_Map1(matrix, player, map)
-    matrix[player.current_x][player.current_y].config(bg=map.Color_Player) #Places the player
+    Which_Level[player.level](matrix, player, map)
     map.Left_Spots=map.Boxes
+    matrix[player.current_x][player.current_y].config(bg=map.Color_Player) #Places the player
+    
+    
+
+
 
 #Standard map - generates the borders and the empty space
 def Standard_map(window, matrix, map):
@@ -23,7 +25,7 @@ def Standard_map(window, matrix, map):
     matrix[7][5].config(bg="Magenta")
     
 #First tutorial map
-def tutorial_Map2(matrix, player, map):
+def Map1(matrix, player, map):
     player.current_x=5
     player.current_y=7
     map.Boxes=1
@@ -36,10 +38,10 @@ def tutorial_Map2(matrix, player, map):
     matrix[9][7].config(bg=map.Color_Goal)
     matrix[8][7].config(bg=map.Color_Chest) 
 
-def tutorial_Map1(matrix, player, map):
-    player.current_x=5
+def Map2(matrix, player, map):
+    player.current_x=4
     player.current_y=7
-    map.Boxes=8
+    map.Boxes=1
     for j in range(1,14):
         for i in range (1,14): 
             if ((j==5 and 2<i<12) or (j==6 and 2<i<12) or (j==7 and 2<i<12) or (j==8 and 2<i<12) or (j==9 and 2<i<12)):
@@ -47,7 +49,11 @@ def tutorial_Map1(matrix, player, map):
             else:
                 matrix[i][j].config(bg=map.Color_Obstacle) 
     matrix[10][7].config(bg=map.Color_Goal)
-    matrix[4][7].config(bg=map.Color_Chest) 
-                
+    matrix[5][7].config(bg=map.Color_Chest) 
+
+
+Which_Level={1:Map1,2:Map2,3:Map1,4:Map2,5:Map1,}#This dictionary orders the maps
+
+
 
         

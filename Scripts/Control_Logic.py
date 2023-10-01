@@ -1,5 +1,4 @@
 from tkinter import *
-import Maps
 
 
 #Movement and anti-collision function (it encapsulates everything from this module)
@@ -86,6 +85,7 @@ def Goal_or_Space(matrix, player, map):
 
 
 #this function changes the number of boxes left
+#IMPORTANT -> If the player can still move after every goal spot is filled, this function may crack the game. When the map is completed the control buttons MUST BE DISABLED!
 def boxes_left(player,map, hml):
     if (map.Left_Spots > 1):
         hml.config(text="%d boxes left"%map.Left_Spots)

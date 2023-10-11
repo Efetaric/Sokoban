@@ -1,10 +1,13 @@
 from tkinter import *
+import Control_Logic
 
 #Takes the data from the custom made maps to place the player, the obstacles, the goals and the boxes
 def Maps_order(matrix, player, map):
     Which_Level[player.level](matrix, player, map)
     map.Left_Spots=map.Boxes
     matrix[player.current_x][player.current_y].config(bg=map.Color_Player) #Places the player
+
+
     
     
 
@@ -19,7 +22,7 @@ def Standard_map(window, matrix, player, map):
             ##Makes the outter borders
             if (j==0 or j==14 or i==0 or i==14):
                 matrix[j][i].config(bg=map.Color_Border)
-    Maps_order(matrix, player, map) #This function is called in order to initiliazie the first map (either start/ load)
+
 
     
 #First tutorial map

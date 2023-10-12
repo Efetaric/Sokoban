@@ -12,7 +12,7 @@ def Maps_order(matrix, player, map):
     
 
 #Standard map - generates the borders and the empty space 
-def Standard_map(window, matrix, player, map):    
+def Standard_map(window, matrix, map):    
     columns=[0]*15
     for j in range(0,15):
         for i in range (0,15): 

@@ -1,7 +1,6 @@
 from tkinter import *
 import Maps 
 import Buttons_and_Labels
-import Control_Logic
 
 map_matrix=[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]] #This contains the map (it turns into a 15x15 matrix)
 
@@ -59,12 +58,14 @@ root.config(background="Silver")
 position(root)
 root.configure(background="Darkgrey")
 
-canvas= Canvas(root, bg="Black")
-Maps.Standard_map(canvas, map_matrix, User, Current_Map)#Generates the map
+canvas = Canvas(root, bg="Black")
+Maps.Standard_map(canvas, map_matrix, Current_Map)#Generates the map
+inst = Canvas(root, bg="Darkgrey", width=300, height=325, highlightthickness=0) #Generates the instructions
+ 
 
 
 
-Buttons_and_Labels.buttons(root, canvas, map_matrix, User, Current_Map, User, main, map_matrix, Current_Map)
+Buttons_and_Labels.buttons(root, canvas, inst, map_matrix, User, Current_Map, User, main, map_matrix, Current_Map)
 
 
 

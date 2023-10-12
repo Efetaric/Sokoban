@@ -14,6 +14,7 @@ Functions implemented and functions that are being worked on at this moment:
 the user tries to push the transformed box back into empty space: it turns again into magenta, the label increases the number of boxes left with
 1 and the goal area needs to be filled again. When every box is pushed a button "next" appears and the user can go to the following map.
 #It's possible to return to the menu anytime.
+#Instructions window is ready
 
 Problems:
 It has a bit of lag when the map is generated.
@@ -21,5 +22,4 @@ It has a bit of lag when the map is generated.
 Working on: 
 Maps
 Save/ Load
-In-game instructions
 </pre>

@@ -5,18 +5,19 @@ import Save_Load
 
 #>>>> Buttons
 CONTROL_buttons=[[],[],[],[]] #Stores the control buttons
+Save_buttons=[[],[],[],[]] #Stores the save buttons
+Load_buttons=[[],[],[],[]] #Stores the load buttons
 
 
 def btn_pressed(button, player): #Stores the pressed button id
     player.Button_Pressed=button
 
     #>>>> Control buttons & the state of controls and next
-def control_button(color, width, height, x, y, which_btn, player, matrix, map, hml, button, Next_btn, i): #The control buttons
-     button[i] = Button(bg=color, width = width, height = height, command=lambda: [btn_pressed(which_btn, player), Control_Logic.walk(matrix, player, map, hml), Turn_Off(CONTROL_buttons, map.Left_Spots, Next_btn)])
-     button[i].place(x=x, y=y)
-     print(button[i])
+def control_button(Lower_Courtain, x, y, player, map, hml, which_button, Next_btn, i): #The control buttons
+    CONTROL_buttons[i]= Button(Lower_Courtain, bg="Purple", width=5, height=1, command=lambda: [btn_pressed("%s"%which_button, player), Control_Logic.walk( player, map, hml), Turn_Off(map.Left_Spots, Next_btn)])
+    CONTROL_buttons[i].place(x=x, y=y)
 
-def Turn_Off(CONTROL_buttons, Left_Spots, Next_btn): #Disables the control buttons & activates next button
+def Turn_Off(Left_Spots, Next_btn): #Disables the control buttons & activates next button
     if(Left_Spots==0):
         for i in range (0,4):
             CONTROL_buttons[i].config(state=DISABLED, bg="Grey")
@@ -29,86 +30,50 @@ def Turn_On(Next_btn): #Activates the control buttons & disables next button
     #Control buttons & the state of controls and next <<<<<<<<<<<<<<<<<<<<<
 
 
-    
-def Save_or_Load_buttons(User, player, function): #Saves the current level
-    s1 = Button(text="Slot1", font=("Comic Sans", 20),bg="Green", width = '10', height = '1', command=lambda:[btn_pressed("Slot1", User), function(player),
-                                                                                    destroyer(s1,s2,s3,s4)])
-    s1.place(x=25,y=100)
-    s2 = Button(text="Slot2", font=("Comic Sans", 20),bg="Green", width = '10', height = '1', command=lambda:[btn_pressed("Slot2", User), function(player),
-                                                                                    destroyer(s1,s2,s3,s4)])
-    s2.place(x=100,y=190)
-    s3 = Button(text="Slot3", font=("Comic Sans", 20),bg="Green", width = '10', height = '1', command=lambda:[btn_pressed("Slot3", User), function(player),
-                                                                                    destroyer(s1,s2,s3,s4)])
-    s3.place(x=225,y=100)
-    s4 = Button(text="Slot4", font=("Comic Sans", 20),bg="Green", width = '10', height = '1', command=lambda:[btn_pressed("Slot4", User), function(player),
-                                                                                    destroyer(s1,s2,s3,s4)])
-    s4.place(x=300,y=190)
-
-    
-
-
-def destroyer(a,b,c,d): #Destroys the buttons, created in order to clean up
-    a.destroy()
-    b.destroy()
-    c.destroy()
-    d.destroy()
-
-def menu_buttons(main, canvas, inst, Lower_Courtain, map_matrix, User, Current_Map, hml, cl, player, map, Next_btn): #Spawn the menu buttons
-    Start = Button(text="Start", font=("Comic Sans", 20),bg="Green", width = '10', height = '1', command=lambda:[btn_pressed("Start", User), main(map_matrix, User, Current_Map),
-                                                                                    hml_cl(hml,cl,player,map), Turn_On(Next_btn), canvas.pack(), Lower_Courtain.pack_forget(),
-                                                                                    destroyer(Start, Instructions, Save, Load)])
+def menu_buttons(canvas, menu, inst, save, load, Lower_Courtain, User, Current_Map, hml, cl, player, map): #Spawn the menu buttons
+    Start = Button(menu, text="Start", font=("Comic Sans", 20),bg="Green", width = '10', height = '1', command=lambda:[btn_pressed("Start", User), Maps.Maps_order(User, Current_Map),
+                                                                                    hml_cl(hml,cl,player,map), canvas.pack(), Lower_Courtain.pack(side=BOTTOM), menu.forget()])
     Start.place(x=165,y=30)
-        
-    Instructions = Button(text="Instructions", font=("Comic Sans", 20),bg="Green", width = '10', height = '1', command=lambda:[btn_pressed("Instructions", User),
-                                                                                    inst_menu(main, canvas, inst, Lower_Courtain, map_matrix, User, Current_Map, hml, cl, player, map, Next_btn),
-                                                                                    inst.pack(), canvas.forget(),destroyer(Start, Instructions, Save, Load)])
+    Instructions = Button(menu, text="Instructions", font=("Comic Sans", 20),bg="Green", width = '10', height = '1', command=lambda:[btn_pressed("Instructions", User),
+                                                                                    isl_menu(menu, inst, player), inst.pack(), menu.forget()])
     Instructions.place(x=165,y=100)
-
-    Save = Button(text="Save", font=("Comic Sans", 20),bg="Green", width = '10', height = '1', command=lambda:[btn_pressed("Save", User), Save_or_Load_buttons(User, player, Save_Load.Save),
-                                                                                    destroyer(Start, Instructions, Save, Load)])
+    Save = Button(menu, text="Save", font=("Comic Sans", 20),bg="Green", width = '10', height = '1', command=lambda:[btn_pressed("Save", User), 
+                                                                                    isl_menu(menu, save, player),save.pack(), menu.forget()])
     Save.place(x=165,y=170)
-
-    Load = Button(text="Load", font=("Comic Sans", 20),bg="Green", width = '10', height = '1', command=lambda:[btn_pressed("Load", User), Save_Load.Load(player), Save_or_Load_buttons(User, player, Save_Load.Load), 
-                                                                                    destroyer(Start, Instructions, Save, Load)])
+    Load = Button(menu, text="Load", font=("Comic Sans", 20),bg="Green", width = '10', height = '1', command=lambda:[btn_pressed("Load", User), 
+                                                                                    isl_menu(menu, load, player),load.pack(), menu.forget(), Save_Load.Great_Load()])
     Load.place(x=165,y=240)
+    menu.pack()#Loads the buttons
 
 
-def inst_label(inst, text, size, bold, height, width, bg, fg, x, y): #This is creates the label for instructions
-    inst = Label(inst, text=text,font=("MS Sans Serif", size, bold), height=height, width=width, bg=bg, fg=fg)
-    inst.place(x=x,y=y) #HML/ How many left
 
-
-def buttons(window, canvas, inst, matrix, player, map, User, main, map_matrix, Current_Map): #the main function from this module
-
-
-    instructions(inst)
+def initialize_every_button(canvas, menu, inst, save, load, Lower_Courtain, player, Current_Map, User): #the main function from this module
 
     #>>>> LOWER SIDE
-    cl = Label(window, font=("MS Sans Serif", "15", "bold"), height=1, width=10, bg="Black", fg="Yellow")
-    cl.place(x=40,y=385) #CL/ Current level
-    hml = Label(window, font=("MS Sans Serif", "15", "bold"), height=1, width=10, bg="Black", fg="Red")
-    hml.place(x=40,y=345) #HML/ How many left
+    cl = Label(Lower_Courtain, font=("MS Sans Serif", "15", "bold"), height=1, width=10, bg="Black", fg="Yellow")
+    cl.place(x=5,y=6) #CL/ Current level
+    hml = Label(Lower_Courtain, font=("MS Sans Serif", "15", "bold"), height=1, width=10, bg="Black", fg="Red")
+    hml.place(x=5,y=42) #HML/ How many left
     
-    Next_btn = Button(bg="Grey", fg="Black", text="Next", width = '10', height = '1', state=DISABLED, command=lambda: [Maps.Maps_order(matrix, player, map),hml_cl(hml, cl, player, map),
+    Next_btn = Button(Lower_Courtain, bg="Grey", fg="Black", text="Next", width = '10', height = '1', state=DISABLED, command=lambda: [Maps.Maps_order(player, Current_Map),hml_cl(hml, cl, player, Current_Map),
                                                                                 Turn_On(Next_btn)])
-    Next_btn.place(x=360,y=355)    
+    Next_btn.place(x=360,y=8)    
 
-    Menu = Button(bg="Black", fg="White", text="Menu", width = '10', height = '1', command=lambda: [btn_pressed("Menu", player), canvas.forget(),Lower_Courtain.pack(side=BOTTOM),
-                                                                                menu_buttons(main, canvas, inst, Lower_Courtain, map_matrix, User, Current_Map, hml, cl, player, map, Next_btn)])
-    Menu.place(x=360,y=390)
+    Menu = Button(Lower_Courtain, bg="Black", fg="White", text="Menu", width = '10', height = '1', command=lambda: [btn_pressed("Menu", player),Turn_On( Next_btn), #this button returns from game to menu
+                                                                                                                     canvas.forget(),Lower_Courtain.forget(), menu.pack()])
+    Menu.place(x=360,y=44)
     
         #>>>> Places the control buttons
-    control_button("Purple", "5", "1", 226.3, 345, "Up", player, matrix, map, hml, CONTROL_buttons, Next_btn, 0)
-    control_button("Purple", "5", "1", 182, 370, "Left", player, matrix, map, hml, CONTROL_buttons, Next_btn, 1)
-    control_button("Purple", "5", "1", 226.3, 395, "Down", player, matrix, map, hml, CONTROL_buttons, Next_btn, 2)
-    control_button("Purple", "5", "1", 270, 370, "Right", player, matrix, map, hml, CONTROL_buttons, Next_btn, 3) 
+    control_button(Lower_Courtain, 227, 0, player, Current_Map, hml, "Up", Next_btn, 0)
+    control_button(Lower_Courtain, 183, 25, player, Current_Map, hml, "Left", Next_btn, 1)
+    control_button(Lower_Courtain, 227, 50, player, Current_Map, hml, "Down", Next_btn, 2)
+    control_button(Lower_Courtain, 271, 25, player, Current_Map, hml, "Right", Next_btn, 3)
         #Places the control buttons <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-    Lower_Courtain = Canvas(bg="Darkgrey", width=500, height=75, highlightthickness=0) #This canvas hides the control buttons, the labels and the next/menu buttons
-    Lower_Courtain.pack(side=BOTTOM)
     #Lower Side <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-    menu_buttons(main, canvas, inst, Lower_Courtain, map_matrix, User, Current_Map, hml, cl, player, map, Next_btn)
+    
+    instructions(inst)
+    Save_Load_buttons(save, load, User, player) #Save canvas pack
+    menu_buttons(canvas, menu, inst, save, load, Lower_Courtain, User, Current_Map, hml, cl, player, Current_Map)
     
 
 def hml_cl(hml,cl,player,map): #This turns "boxes" into "box" if the new map has only one box & changes the changes the current level sign
@@ -119,11 +84,15 @@ def hml_cl(hml,cl,player,map): #This turns "boxes" into "box" if the new map has
         hml.config(text="%d boxes left"%map.Left_Spots)
 #Buttons <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
+
 #>>>> Instructions
-def inst_menu(main, canvas, inst, Lower_Courtain, map_matrix, User, Current_Map, hml, cl, player, map, Next_btn):# this generates the button which returns from  instructions to menu
-    inst_Menu = Button(bg="Black", fg="White", text="Menu", width = '10', height = '1', command=lambda: [btn_pressed("Menu", player), inst.forget(), inst_Menu.destroy(),
-                                                                                menu_buttons(main, canvas, inst, Lower_Courtain, map_matrix, User, Current_Map, hml, cl, player, map, Next_btn)])
-    inst_Menu.place(x=360,y=390)
+def inst_label(inst, text, size, bold, height, width, bg, fg, x, y): #This is creates the label for instructions
+    inst = Label(inst, text=text,font=("MS Sans Serif", size, bold), height=height, width=width, bg=bg, fg=fg)
+    inst.place(x=x,y=y) #HML/ How many left
+
+def isl_menu(menu, inst, player):# this generates a button which can return from instructions, save or load to main menu
+    isl_menu = Button(bg="Black", fg="White", text="Menu", width = '10', height = '1', command=lambda: [btn_pressed("Menu", player), inst.forget(), isl_menu.destroy(), menu.pack()])
+    isl_menu.place(x=360,y=390)
 
 def details(inst, number, color1, color2, color3, background, y, sign): #this function makes labels witth the colors (instructions)
     inst_label(inst, number, 16, "normal", 1, 2, background, "Black", 0, y)
@@ -158,4 +127,35 @@ def instructions(inst):
         # Forbidden cases <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     #Details <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 #Instructions <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+#>>>> Save and Load functions - I couldn't merge load with save for some reason
+def save_btn(save, User, player, Slot, x, y, i):
+     Save_buttons[i] = Button(save, text=Slot, font=("Comic Sans", 20),bg="Green", width = '10', height = '1', command=lambda:[btn_pressed(Slot, User), Save_Load.Save(player)])
+     Save_buttons[i].place(x=x ,y=y)
+
+def load_btn(load, User, player, Slot, x, y, i):
+    Load_buttons[i] = Button(load, text=Slot, font=("Comic Sans", 20),bg="Green", width = '10', height = '1', command=lambda:[btn_pressed(Slot, User), Save_Load.Load(player)])
+    Load_buttons[i].place(x=x ,y=y)
+
+def Save_Load_buttons(save, load, User, player): #Saves the current level
+    save_btn(save, User, player, "Slot1", 25, 100, 0)
+    save_btn(save, User, player, "Slot2", 100, 190, 1)
+    save_btn(save, User, player, "Slot3", 225, 100, 2)
+    save_btn(save, User, player, "Slot4", 300, 190, 3)
+
+    load_btn(load, User, player, "Slot1", 25, 100, 0)
+    load_btn(load, User, player, "Slot2", 100, 190, 1)
+    load_btn(load, User, player, "Slot3", 225, 100, 2)
+    load_btn(load, User, player, "Slot4", 300, 190, 3)
+
+      
+    
+    
+
+    
+    
+
+
+
+  
 

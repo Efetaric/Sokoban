@@ -2,7 +2,6 @@ from tkinter import *
 import Maps 
 import Buttons_and_Labels
 
-map_matrix=[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]] #This contains the map (it turns into a 15x15 matrix)
 
 def position(root): #Sets the main window
 
@@ -18,14 +17,6 @@ def position(root): #Sets the main window
     y = (screen_height/2) - (height/2)
 
     root.geometry('%dx%d+%d+%d' % (width, height, x, y))
-
-        
-
-def main(matrix, player, map): #The main function
-
-    Maps.Maps_order(matrix, player, map)
-
-
 
 
 class Player:
@@ -59,13 +50,19 @@ position(root)
 root.configure(background="Darkgrey")
 
 canvas = Canvas(root, bg="Black")
-Maps.Standard_map(canvas, map_matrix, Current_Map)#Generates the map
-inst = Canvas(root, bg="Darkgrey", width=300, height=325, highlightthickness=0) #Generates the instructions
+Maps.Standard_map(canvas, Current_Map)#Generates the map
+
+menu = Canvas(root, bg="Darkgrey", width=500, height=325, highlightthickness=0) #Generates the menu canvas
+inst = Canvas(root, bg="Darkgrey", width=300, height=325, highlightthickness=0) #Generates the instructions canvas
+save = Canvas(root, bg="Darkgrey", width=500, height=325, highlightthickness=0) #Generates the save canvas
+load = Canvas(root, bg="Darkgrey", width=500, height=325, highlightthickness=0) #Generates the load canvas
+Lower_Courtain = Canvas(bg="Darkgrey", width=500, height=75, highlightthickness=0) #This canvas hides the control buttons, the labels and the next/menu buttons
+
  
 
 
 
-Buttons_and_Labels.buttons(root, canvas, inst, map_matrix, User, Current_Map, User, main, map_matrix, Current_Map)
+Buttons_and_Labels.initialize_every_button(canvas, menu, inst, save, load, Lower_Courtain, User, Current_Map, User)
 
 
 

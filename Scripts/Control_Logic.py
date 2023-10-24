@@ -1,21 +1,21 @@
 from tkinter import *
-
+import Maps
 
 #Movement and anti-collision function (it encapsulates everything from this module)
-def walk(matrix, player, map, hml):
+def walk(player, map, hml):
     print(player.Button_Pressed)
     match player.Button_Pressed:
         case "Up":
-            direction(matrix, player, 0, -1, map)
+            direction(Maps.map_matrix, player, 0, -1, map)
         case "Left":
-            direction(matrix, player, -1, 0, map)
+            direction(Maps.map_matrix, player, -1, 0, map)
         case "Down":
-            direction(matrix, player, 0, 1, map)
+            direction(Maps.map_matrix, player, 0, 1, map)
         case "Right":
-            direction(matrix, player, 1, 0, map)
+            direction(Maps.map_matrix, player, 1, 0, map)
 
     print(map.Left_Spots)
-    matrix[player.current_x][player.current_y].config(bg=map.Color_Player)
+    Maps.map_matrix[player.current_x][player.current_y].config(bg=map.Color_Player)
     boxes_left(player, map, hml)
 
 

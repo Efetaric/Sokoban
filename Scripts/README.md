@@ -15,11 +15,13 @@ the user tries to push the transformed box back into empty space: it turns again
 1 and the goal area needs to be filled again. When every box is pushed a button "next" appears and the user can go to the following map.
 #It's possible to return to the menu anytime.
 #Instructions window is ready
+#Save/Load is ready. There are designed many safety nets in case the User loses/erases the save file. As long as there's not added "D" and "T" or random slots I don't think there can be any problems.
 
 Problems:
 It has a bit of lag when the map is generated.
 
-Working on: 
-Maps
-Save/ Load
+Working on:
+-Delete load files function, even if it isn't necesary since the save buttons rewrite the save file each time.
+-Create a "New game" button that activates after the users passes level 1. 
+-Maps are still lacking. I'll focus on them after I finish the above functions.
 </pre>

@@ -21,6 +21,7 @@ Problems:
 It has a bit of lag when the map is generated.
 
 Working on:
+-Night/Day mode
 -Delete load files function, even if it isn't necesary since the save buttons rewrite the save file each time.
 -Create a "New game" button that activates after the users passes level 1. 
 -Maps are still lacking. I'll focus on them after I finish the above functions.

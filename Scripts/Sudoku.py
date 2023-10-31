@@ -39,32 +39,73 @@ class Map:
         self.Color_Chest = Color_Chest
         self.Color_Transform = Color_Transform
 
+class Appearance: #This is for day and night mode
+    def __init__(self, day_bg, night_bg, font_dColor, font_nColor, btn_dColor, btn_nColor, mode):
+        self.day_bg=day_bg #day mode background
+        self.night_bg=night_bg #night mode background
+        self.font_dColor=font_dColor #day mode font
+        self.font_nColor=font_nColor #night mode font
+        self.btn_dColor=btn_dColor #button bg day mode
+        self.btn_nColor=btn_nColor #button bg night mode
+        self.menu_dColor=btn_nColor #menu day mode (in reverse with the menu buttons)
+        self.menu_nColor=btn_dColor #menu night mode
+
+
+        self.mode=mode
+        self.background=day_bg
+        self.font_color=font_dColor
+        self.btn_color=btn_dColor
+        self.menu_color=btn_dColor
+        
+
+
+
+    def night_or_day(self): #Changes everything
+        if (self.mode<1):#day mode
+            self.mode=1
+            print("Day mode")
+            self.background=self.day_bg
+            self.font_color=self.font_dColor
+            self.btn_color=self.btn_dColor
+            self.menu_color=self.menu_dColor
+            return self.background, self.font_color, self.btn_color, self.menu_color
+        else:             #night mode
+            self.mode=0
+            print("Night mode")
+            self.background=self.night_bg
+            self.font_color=self.font_nColor
+            self.btn_color=self.btn_nColor
+            self.menu_color=self.menu_nColor
+            return self.background, self.font_color, self.btn_color, self.menu_color
+
+        
+      
+
+
+    
+            
+
 ######################################################################
 
 User = Player(level=1,current_x=1,current_y=2, step_over=0, Button_Pressed='No_Button_Pressed')
-Current_Map = Map(Boxes=0, Left_Spots=0, Color_Border="Black", Color_Obstacle="Midnightblue", Color_Space="Grey", Color_Goal="Lime", Color_Player="Yellow", Color_Chest="Magenta", Color_Transform="Purple")
+Current_Map = Map(Boxes=0, Left_Spots=0, Color_Border="Grey", Color_Obstacle="Navy", Color_Space="Steelblue", Color_Goal="Aquamarine", Color_Player="Yellow", Color_Chest="Violetred", Color_Transform="Purple")
+Mode = Appearance(day_bg ="Darkgrey", night_bg="Black", font_dColor="Black", font_nColor="Darkgrey", btn_dColor="deep sky blue", btn_nColor="Yellow", mode=1) 
 
 root = Tk()
-root.config(background="Silver")
+root.config()
 position(root)
-root.configure(background="Darkgrey")
+root.configure(background=Mode.background)
 
-canvas = Canvas(root, bg="Black")
+canvas = Canvas(bg="Black", highlightthickness=0)
 Maps.Standard_map(canvas, Current_Map)#Generates the map
 
-menu = Canvas(root, bg="Darkgrey", width=500, height=325, highlightthickness=0) #Generates the menu canvas
-inst = Canvas(root, bg="Darkgrey", width=300, height=325, highlightthickness=0) #Generates the instructions canvas
-save = Canvas(root, bg="Darkgrey", width=500, height=325, highlightthickness=0) #Generates the save canvas
-load = Canvas(root, bg="Darkgrey", width=500, height=325, highlightthickness=0) #Generates the load canvas
-Lower_Courtain = Canvas(bg="Darkgrey", width=500, height=75, highlightthickness=0) #This canvas hides the control buttons, the labels and the next/menu buttons
-
- 
 
 
 
-Buttons_and_Labels.initialize_every_button(canvas, menu, inst, save, load, Lower_Courtain, User, Current_Map, User)
 
+Buttons_and_Labels.initialize_every_button(root, canvas, User, Current_Map, User, Mode)
 
+#button bg  si shifter
 
 
 

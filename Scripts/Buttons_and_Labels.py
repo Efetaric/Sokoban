@@ -2,7 +2,7 @@ from tkinter import *
 import Maps
 import Control_Logic
 import Save_Load
-import Classes
+
 
 
 CONTROL_buttons=[[],[],[],[]] #Stores the control buttons
@@ -16,8 +16,8 @@ def btn_pressed(button, player): #Stores the pressed button id
     player.Button_Pressed=button
 
 #>>>> Control buttons & the state of controls and next
-def control_button(Lower_Courtain, x, y, player, map, hml, which_button, Next_btn, i): #The control buttons
-    CONTROL_buttons[i]= Button(Lower_Courtain, bg="Purple", width=5, height=1, command=lambda: [btn_pressed("%s"%which_button, player), Control_Logic.walk( player, map, hml), Turn_Off(map.Left_Spots, Next_btn)])
+def control_button(root, Lower_Courtain, x, y, player, map, hml, which_button, Next_btn, i): #The control buttons
+    CONTROL_buttons[i]= Button(Lower_Courtain, bg="Purple", width=5, height=1, command=lambda: [btn_pressed("%s"%which_button, player), Control_Logic.walk(root, player, map, hml), Turn_Off(map.Left_Spots, Next_btn)])
     CONTROL_buttons[i].place(x=x, y=y)
 
 def Turn_Off(Left_Spots, Next_btn): #Disables the control buttons & activates next button
@@ -72,10 +72,10 @@ def initialize_every_button(root, canvas, player, Day_or_Night, Day, Night): #th
                                                                                     menu.pack(), Menu.place_forget()])
     
     #>>>> Places the control buttons
-    control_button(Lower_Courtain, 227, 0, player, Day_or_Night, hml, "Up", Next_btn, 0)
-    control_button(Lower_Courtain, 183, 25, player, Day_or_Night, hml, "Left", Next_btn, 1)
-    control_button(Lower_Courtain, 227, 50, player, Day_or_Night, hml, "Down", Next_btn, 2)
-    control_button(Lower_Courtain, 271, 25, player, Day_or_Night, hml, "Right", Next_btn, 3)
+    control_button(root, Lower_Courtain, 227, 0, player, Day_or_Night, hml, "Up", Next_btn, 0)
+    control_button(root, Lower_Courtain, 183, 25, player, Day_or_Night, hml, "Left", Next_btn, 1)
+    control_button(root, Lower_Courtain, 227, 50, player, Day_or_Night, hml, "Down", Next_btn, 2)
+    control_button(root, Lower_Courtain, 271, 25, player, Day_or_Night, hml, "Right", Next_btn, 3)
         #Places the control buttons <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     #Lower Side <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     

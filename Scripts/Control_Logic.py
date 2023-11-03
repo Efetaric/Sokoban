@@ -1,8 +1,10 @@
 from tkinter import *
 import Maps
+import Animation
+
 
 #Movement and anti-collision function (it encapsulates everything from this module)
-def walk(player, map, hml):
+def walk(root, player, map, hml):
     print(player.Button_Pressed)
     match player.Button_Pressed:
         case "Up":
@@ -15,10 +17,7 @@ def walk(player, map, hml):
             direction(Maps.map_matrix, player, 1, 0, map)
 
     print(map.Left_Spots)
-    if (player.step_over==0):
-        Maps.map_matrix[player.current_x][player.current_y].config(image=map.Player_space_image)
-    else:
-        Maps.map_matrix[player.current_x][player.current_y].config(image=map.Player_goal_image)
+    #Animation.Total_Player_Ani(map, player, 0)
     boxes_left(player, map, hml)
 
 

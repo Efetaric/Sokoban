@@ -36,7 +36,7 @@ class Day_Night:
     def __init__(self, Boxes, Left_Spots, Day):
         #Day initialization
             #Buttons
-        self.mode=0 #0 is day 
+        self.mode=1 #day=1, default is day
         self.Boxes = Boxes #this is used only to initialize the left spots, but it can be used to print "x boxes out of y boxes"
         self.Left_Spots = Left_Spots
         self.bg=Day.bg #canvas background

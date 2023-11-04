@@ -1,0 +1,13 @@
+*.clip
+*.gif
+*.exe
+*.bat
+Lib/
+Scripts/Activate.ps1
+Scripts/Save.txt
+Scripts/__pycache__/
+Scripts/activate
+Scripts/tempCodeRunnerFile.py
+main/
+master/
+

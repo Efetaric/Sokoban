@@ -43,7 +43,7 @@ Day = Classes.Aspect(
     fg="Black",
     btn_Color="Deep sky blue",
     menu_Color="Green",
-    Mode="../Sprites/Day_Mode.png",
+    Mode='../Sprites/Day_Mode.png',
     #Map
     Border_image="../Sprites/Wall_dTop.png",
     Border_image2="../Sprites/Wall_dBottom.png", 

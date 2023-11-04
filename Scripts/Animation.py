@@ -43,4 +43,3 @@ def Animation_Player(root, Day_or_Night, player, i):
         i=0
     i += 1
     root.after(20, Animation_Player, root, Day_or_Night, player, i)
-

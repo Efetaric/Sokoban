@@ -9,8 +9,8 @@ def strings_in_lists(name, container):
             container.append(frame)
     print(len(Player_dRGoal))
 
-strings_in_lists("Sprites/Player_dRGoal", Player_dRGoal) 
-strings_in_lists("Sprites/Player_dLGoal", Player_dLGoal) 
+strings_in_lists("../Sprites/Player_dRGoal", Player_dRGoal) 
+strings_in_lists("../Sprites/Player_dLGoal", Player_dLGoal) 
 
         
 

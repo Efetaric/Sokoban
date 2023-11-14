@@ -54,7 +54,8 @@ def step_over(matrix, player, X_coordonate, Y_coordonate, map):
     if (matrix[player.current_x+(X_coordonate)][player.current_y+(Y_coordonate)].cget("image")==str(map.Goal_image) 
         or matrix[player.current_x+(X_coordonate)][player.current_y+(Y_coordonate)].cget("image")==str(map.Chest_goal_image)):#
         player.step_over=1
-    elif (matrix[player.current_x+(X_coordonate)][player.current_y+(Y_coordonate)].cget("image")!=str(map.Goal_image)):
+    elif (matrix[player.current_x+(X_coordonate)][player.current_y+(Y_coordonate)].cget("image")!=str(map.Goal_image)
+        or matrix[player.current_x+(X_coordonate)][player.current_y+(Y_coordonate)].cget("image")!=str(map.Chest_goal_image)):
         player.step_over=0
     print("step %d"%player.step_over)
     
@@ -62,14 +63,21 @@ def step_over(matrix, player, X_coordonate, Y_coordonate, map):
 
 def step_over_with_box(root, matrix, player, X_coordonate, Y_coordonate, map):
     #With a box
-    if (matrix[player.current_x+(X_coordonate+X_coordonate)][player.current_y+(Y_coordonate+Y_coordonate)].cget("image")==str(map.Border_image) 
-        or matrix[player.current_x+(X_coordonate+X_coordonate)][player.current_y+(Y_coordonate+Y_coordonate)].cget("image")==str(map.Obstacle_image)): ##Verifies if there are obstacles ahead(2 Steps)
+    if (matrix[player.current_x+(X_coordonate+X_coordonate)][player.current_y+(Y_coordonate+Y_coordonate)].cget("image")==str(map.Border_image) ##Verifies if there are obstacles ahead(2 Steps)
+        or matrix[player.current_x+(X_coordonate+X_coordonate)][player.current_y+(Y_coordonate+Y_coordonate)].cget("image")==str(map.Obstacle_image) 
+        or matrix[player.current_x+(X_coordonate+X_coordonate)][player.current_y+(Y_coordonate+Y_coordonate)].cget("image")==str(map.Chest_goal_image)
+        or matrix[player.current_x+(X_coordonate+X_coordonate)][player.current_y+(Y_coordonate+Y_coordonate)].cget("image")==str(map.Chest_space_image)): 
         return
     else:
         Goal_or_Space(root, player, map)
         step_over(matrix, player, X_coordonate, Y_coordonate, map)
-        if (matrix[player.current_x+(X_coordonate+X_coordonate)][player.current_y+(Y_coordonate+Y_coordonate)].cget("image")==str(map.Goal_image)):
+        if (matrix[player.current_x+(X_coordonate)][player.current_y+(Y_coordonate)].cget("image")==str(map.Chest_goal_image) and                      ##Goal to Goal -It's made in order to not decrease left boxes when moving from goal to goal
+           (matrix[player.current_x+(X_coordonate+X_coordonate)][player.current_y+(Y_coordonate+Y_coordonate)].cget("image")==str(map.Goal_image))):
+
             matrix[player.current_x+(X_coordonate+X_coordonate)][player.current_y+(Y_coordonate+Y_coordonate)].config(image=str(map.Chest_goal_image)) ##Moves the box inside goal area and transforms it
+        elif(matrix[player.current_x+(X_coordonate+X_coordonate)][player.current_y+(Y_coordonate+Y_coordonate)].cget("image")==str(map.Goal_image)):   #Moves the box from Space to Goal
+            
+            matrix[player.current_x+(X_coordonate+X_coordonate)][player.current_y+(Y_coordonate+Y_coordonate)].config(image=str(map.Chest_goal_image))
             map.Left_Spots -= 1 #Decreases the goal slots area when a box is over it
         else:
             if (matrix[player.current_x+(X_coordonate)][player.current_y+(Y_coordonate)].cget("image")==str(map.Chest_goal_image)):
@@ -81,10 +89,11 @@ def step_over_with_box(root, matrix, player, X_coordonate, Y_coordonate, map):
 
 ##Returns the area to normal after the user moves
 def Goal_or_Space(root, player, map):
+
     if (player.step_over==1):
-        Animation.Inbetween_Order(root, map, player, Animation.Player_dUGoal, Animation.Player_dLGoal, Animation.Player_dRGoal, Animation.Player_dRGoal, map.Goal_image)
+        Animation.Inbetween_Order(root, map, player, Animation.Player_dUGoal, Animation.Player_dUSpace, Animation.Player_dLGoal, Animation.Player_dLSpace, Animation.Player_dRGoal, Animation.Player_dRSpace, Animation.Player_dRGoal, Animation.Player_dRSpace, map.Goal_image)
     elif (player.step_over==0):
-        Animation.Inbetween_Order(root, map, player, Animation.Player_dUSpace, Animation.Player_dLSpace, Animation.Player_dRSpace, Animation.Player_dRSpace, map.Space_image)
+        Animation.Inbetween_Order(root, map, player, Animation.Player_dUSpace, Animation.Player_dUGoal, Animation.Player_dLSpace, Animation.Player_dRGoal, Animation.Player_dRSpace, Animation.Player_dLGoal, Animation.Player_dRSpace, Animation.Player_dRGoal, map.Space_image)
 
 #this function changes the number of boxes left
 #IMPORTANT -> If the player can still move after every goal spot is filled, this function may crack the game. When every box is moved to its area, the control buttons MUST BE DISABLED!

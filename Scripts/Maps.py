@@ -50,7 +50,7 @@ def Map1(matrix, player, map):
 def Map2(matrix, player, map):
     player.current_x=4
     player.current_y=7
-    map.Boxes=1
+    map.Boxes=2
     for j in range(1,14):
         for i in range (1,14): 
             if ((j==5 and 2<i<12) or (j==6 and 2<i<12) or (j==7 and 2<i<12) or (j==8 and 2<i<12) or (j==9 and 2<i<12)):
@@ -58,7 +58,9 @@ def Map2(matrix, player, map):
             else:
                 matrix[i][j].config(image=map.Obstacle_image) 
     matrix[10][7].config(image=map.Goal_image)
+    matrix[10][8].config(image=map.Goal_image)
     matrix[5][7].config(image=map.Chest_space_image) 
+    matrix[5][8].config(image=map.Chest_space_image)
 
 
 Which_Level={1:Map1,2:Map2,3:Map1,4:Map2,5:Map1,}#This dictionary orders the maps

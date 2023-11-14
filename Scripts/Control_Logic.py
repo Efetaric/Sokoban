@@ -4,7 +4,7 @@ import Animation
 
 
 #Movement and anti-collision function (it encapsulates everything from this module)
-def walk(root, player, map, hml):
+def walk(player, map, hml):
     print(player.Button_Pressed)
     match player.Button_Pressed:
         case "Up":
@@ -17,7 +17,6 @@ def walk(root, player, map, hml):
             direction(Maps.map_matrix, player, 1, 0, map)
 
     print(map.Left_Spots)
-    #Animation.Total_Player_Ani(map, player, 0)
     boxes_left(player, map, hml)
 
 

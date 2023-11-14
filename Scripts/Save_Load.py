@@ -36,16 +36,16 @@ def Great_Load():
     try: # File found & read
         f = open("Save.txt", "r")
         d = f.read()
-        print(d)
+        #print(d)
     except: #No file found
         d = str(-1)
         print("Save.txt is missing")
         for i in range (0,4):
-            Buttons_and_Labels.Load_buttons[i].config(state=DISABLED, bg="Grey", text="Empty", font=("Comic Sans", 20), width = '10', height = '1')
+            Buttons_and_Labels.Load_buttons[i].config(state=DISABLED, bg="Grey", text="Empty", font=("Comic Sans", 33), width = '8', height = '1')
     else:
         if (d.find("Stop")==-1 or d.find("Slot1")==-1 or d.find("Slot2")==-1 or d.find("Slot3")==-1 or d.find("Slot4")==-1): #looks up for the slots and stop in save
             for i in range (0,4):
-                Buttons_and_Labels.Load_buttons[i].config(state=DISABLED, bg="Grey", text="Empty", font=("Comic Sans", 20), width = '10', height = '1')
+                Buttons_and_Labels.Load_buttons[i].config(state=DISABLED, bg="Grey", text="Empty", font=("Comic Sans", 33), width = '8', height = '1')
             print("Save.txt is corrupted!!!")
         else: #starts if save.txt is found and looks fine
             print("Save.txt initialised...")
@@ -63,14 +63,14 @@ def Slot_finder(d, Slot, i): # This function places 2 lines on the slot label: "
     Index_D = d.find("Date", Index_S, Index_End) #The index of Date (between start and end)
     Index_T = d.find("Time", Index_D, Index_End) #The index of Time (between date and end)
     if(Index_D==-1 or Index_T==-1):
-        Buttons_and_Labels.Load_buttons[i].config(state=DISABLED, bg="Grey", text="Empty", font=("Comic Sans", 20), width = '10', height = '1')
-        print("%s is empty"%Slot)
+        Buttons_and_Labels.Load_buttons[i].config(state=DISABLED, bg="Grey", text="Empty", font=("Comic Sans", 33), width = '8', height = '1')
+        #print("%s is empty"%Slot)
     else:
-        print("%s is ready"%Slot)
+        #print("%s is ready"%Slot)
         container_Level = d[Index_S+6:Index_D] #Looks better without the slot
         container_Date = d[Index_D+5:Index_T] #I've used 5 in both to skip over "Date-" and "Time-"
         container_Time = d[Index_T+5:Index_End]
-        Buttons_and_Labels.Load_buttons[i].config(state=NORMAL, bg="Green", text="\n%s\n%s\n%s"%(container_Level,container_Date, container_Time), font=("Comic Sans", 9), width = '23', height = '3')
+        Buttons_and_Labels.Load_buttons[i].config(state=NORMAL, bg="Green", text="\n%s\n%s\n%s"%(container_Level,container_Date, container_Time), font=("Comic Sans", 15), width = '19', height = '3')
 
 
 def Load (player):#Load the file
@@ -78,18 +78,19 @@ def Load (player):#Load the file
     try: # File found & read 
         f = open("Save.txt", "r")
         d = f.read()
-        print(d)
+        #print(d)
     except: #No file found
         d = str(-1)
         print("Save.txt is missing")
         for i in range (0,4):
-            Buttons_and_Labels.Load_buttons[i].config(state=DISABLED, bg="Grey", text="Empty", font=("Comic Sans", 20), width = '10', height = '1')
+            Buttons_and_Labels.Load_buttons[i].config(state=DISABLED, bg="Grey", text="Empty", font=("Comic Sans", 33), width = '8', height = '1')
     else:
         if (d.find("Stop")==-1 or d.find("Slot1")==-1 or d.find("Slot2")==-1 or d.find("Slot3")==-1 or d.find("Slot4")==-1): #looks up for the slots and stop in save
             for i in range (0,4):
-                Buttons_and_Labels.Load_buttons[i].config(state=DISABLED, bg="Grey", text="Empty", font=("Comic Sans", 20), width = '10', height = '1')
+                Buttons_and_Labels.Load_buttons[i].config(state=DISABLED, bg="Grey", text="Empty", font=("Comic Sans", 33), width = '8', height = '1')
             print("Save.txt is corrupted!!!")
         else: #Loading the Save.file!
             Slot=d.find(player.Button_Pressed)
             Level=d[Slot+12]#the index of the level
             player.level=int(Level)
+            print("%s selected!\nCurrent level:%s"%(player.Button_Pressed,Level))

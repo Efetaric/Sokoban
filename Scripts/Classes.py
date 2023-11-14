@@ -2,16 +2,22 @@ from tkinter import *
 
 ###############################################################
 class Player:
-    def __init__(self, level, current_x, current_y, step_over, Button_Pressed):
+    def __init__(self, level, current_x, current_y, step_over, Button_Pressed, inbetween):
         self.level = level
         self.current_x = current_x
         self.current_y = current_y
         self.step_over = step_over
         self.Button_Pressed = Button_Pressed
+        self.inbetween = inbetween # Very important, it is used to determine the type of inbetween
+
+
+
+
+
 
 
 class Aspect: #This is for day and night mode
-    def __init__(self, bg, fg, btn_Color, menu_Color, Mode,  Border_image, Border_image2, Obstacle_image, Space_image, Goal_image, Player_space_image, Player_goal_image, Chest_space_image, Chest_goal_image):
+    def __init__(self, bg, fg, btn_Color, menu_Color, Mode,  Border_image, Border_image2, Obstacle_image, Space_image, Goal_image, Player_image, Chest_space_image, Chest_goal_image):
         #buttons/ canvas
         self.bg=bg #canvas background
         self.fg=fg #font
@@ -25,8 +31,7 @@ class Aspect: #This is for day and night mode
         self.Obstacle_image = PhotoImage(file=Obstacle_image)
         self.Space_image = PhotoImage(file=Space_image)
         self.Goal_image = PhotoImage(file=Goal_image)
-        self.Player_space_image = PhotoImage(file=Player_space_image)
-        self.Player_goal_image = PhotoImage(file=Player_goal_image)
+        self.Player_image = PhotoImage(file=Player_image)
         self.Chest_space_image = PhotoImage(file=Chest_space_image)
         self.Chest_goal_image = PhotoImage(file=Chest_goal_image)
 
@@ -51,8 +56,7 @@ class Day_Night:
         self.Obstacle_image = Day.Obstacle_image
         self.Space_image = Day.Space_image
         self.Goal_image = Day.Goal_image
-        self.Player_space_image = Day.Player_space_image
-        self.Player_goal_image = Day.Player_goal_image
+        self.Player_image = Day.Player_image
         self.Chest_space_image = Day.Chest_space_image
         self.Chest_goal_image = Day.Chest_goal_image
 
@@ -76,8 +80,7 @@ class Day_Night:
             self.Obstacle_image = Day.Obstacle_image
             self.Space_image = Day.Space_image
             self.Goal_image = Day.Goal_image
-            self.Player_space_image = Day.Player_space_image
-            self.Player_goal_image = Day.Player_goal_image
+            self.Player_image = Day.Player_image
             self.Chest_space_image = Day.Chest_space_image
             self.Chest_goal_image = Day.Chest_goal_image
             return self.mode
@@ -97,8 +100,7 @@ class Day_Night:
             self.Obstacle_image = Night.Obstacle_image
             self.Space_image = Night.Space_image
             self.Goal_image = Night.Goal_image
-            self.Player_space_image = Night.Player_space_image
-            self.Player_goal_image = Night.Player_goal_image
+            self.Player_image = Night.Player_image
             self.Chest_space_image = Night.Chest_space_image
             self.Chest_goal_image = Night.Chest_goal_image
             return self.mode

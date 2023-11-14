@@ -4,7 +4,7 @@ import Control_Logic
 import Save_Load
 
 
-
+Menu_buttons=[[],[],[],[],[]] #Stores the menu buttons
 CONTROL_buttons=[[],[],[],[]] #Stores the control buttons
 Save_buttons=[[],[],[],[]] #Stores the save buttons
 Load_buttons=[[],[],[],[]] #Stores the load buttons
@@ -15,69 +15,83 @@ Instructions_btns=[]
 def btn_pressed(button, player): #Stores the pressed button id
     player.Button_Pressed=button
 
-#>>>> Control buttons & the state of controls and next
-def control_button(root, Lower_Courtain, x, y, player, map, hml, which_button, Next_btn, i): #The control buttons
-    CONTROL_buttons[i]= Button(Lower_Courtain, bg="Purple", width=5, height=1, command=lambda: [btn_pressed("%s"%which_button, player), Control_Logic.walk(root, player, map, hml), Turn_Off(map.Left_Spots, Next_btn)])
+# Control buttons & the state of controls and next
+def control_button(Lower_Courtain, x, y, player, map, hml, which_button, Next_btn, Reset_btn, i): #The control buttons
+    CONTROL_buttons[i]= Button(Lower_Courtain, bg="Purple", width=5, height=1, command=lambda: [btn_pressed("%s"%which_button, player), Control_Logic.walk(player, map, hml), Turn_Off(map.Left_Spots, Next_btn, Reset_btn)])
     CONTROL_buttons[i].place(x=x, y=y)
 
-def Turn_Off(Left_Spots, Next_btn): #Disables the control buttons & activates next button
+def Turn_Off(Left_Spots, Next_btn, Reset_btn): #Disables the control buttons/ reset & activates next button
     if(Left_Spots==0):
         for i in range (0,4):
             CONTROL_buttons[i].config(state=DISABLED, bg="Grey")
+        Reset_btn.config(state=DISABLED, bg="Grey")
         Next_btn.config(state=NORMAL, bg="Yellow")
 
-def Turn_On(Next_btn): #Activates the control buttons & disables next button
+def Turn_On(Next_btn, Reset_btn): #Activates the control buttons/ reset & disables next button
     for i in range (0,4):
         CONTROL_buttons[i].config(state=NORMAL, bg="Purple")
+    Reset_btn.config(state=NORMAL, bg="Yellow")
     Next_btn.config(state=DISABLED, bg="Grey")
 #Control buttons & the state of controls and next <<<<<<<<<<<<<<<<<<<<<
+def always_1(player): #Level resets to 1
+    player.level=1
 
+def continue_on_off(player):#turns on/ off the continue button
+    if (player.level==1):
+        Menu_buttons[0].config(state=DISABLED)
+    else:
+        Menu_buttons[0].config(state=NORMAL)
 
 def menu_buttons(root, canvas, menu, inst, save, load, Lower_Courtain, hml, cl, Menu, player, Day_or_Night, Day, Night): #Spawn the menu buttons
 
-    night_mode = Button(text="D/N", image=Day_or_Night.Mode, width = '25', height = '25', command=lambda: [Day_or_Night.Switch(Day,Night),color_shifter(root, menu, inst, save, load, Lower_Courtain, Start, Instructions, Save, Load, Menu, player, Day_or_Night)])
+    night_mode = Button(text="D/N", image=Day_or_Night.Mode, width = '25', height = '25', command=lambda: [Day_or_Night.Switch(Day,Night),color_shifter(root, menu, inst, save, load, Lower_Courtain, Menu, player, Day_or_Night)])
     night_mode.place(x=0, y=0)
-    Start = Button(menu, text="Start", font=("Comic Sans", 20),bg=Day_or_Night.btn_Color, fg=Day_or_Night.fg, width = '10', height = '1', command=lambda:[btn_pressed("Start", player), Maps.Maps_order(player, Day_or_Night),
-                                                                                    hml_cl(hml,cl,player,Day_or_Night), canvas.pack(), Lower_Courtain.pack(side=BOTTOM), Menu.place(x=360,y=390), menu.forget()])
-    Start.place(x=165,y=30)
-    Instructions = Button(menu, text="Instructions", font=("Comic Sans", 20),bg=Day_or_Night.btn_Color, fg=Day_or_Night.fg, width = '10', height = '1', command=lambda:[btn_pressed("Instructions", player), inst.pack(), Menu.place(x=360,y=390), menu.forget()])
-    Instructions.place(x=165,y=100)
-    Save = Button(menu, text="Save", font=("Comic Sans", 20),bg=Day_or_Night.btn_Color, fg=Day_or_Night.fg, width = '10', height = '1', command=lambda:[btn_pressed("Save", player), save.pack(), Menu.place(x=360,y=390), menu.forget()])
-    Save.place(x=165,y=170)
-    Load = Button(menu, text="Load", font=("Comic Sans", 20),bg=Day_or_Night.btn_Color, fg=Day_or_Night.fg, width = '10', height = '1', command=lambda:[btn_pressed("Load", player), load.pack(), Menu.place(x=360,y=390), menu.forget(), Save_Load.Great_Load()])
-    Load.place(x=165,y=240)
+    Menu_buttons[0]=(Button(menu, text="Continue", font=("Comic Sans", 20),bg=Day_or_Night.btn_Color, fg=Day_or_Night.fg, width = '10', height = '1', state=DISABLED, command=lambda:[btn_pressed("Continue", player), Maps.Maps_order(player, Day_or_Night),
+                                                                                    hml_cl(hml,cl,player,Day_or_Night), canvas.pack(), Lower_Courtain.place(x=42, y=520), Menu.place(x=402,y=570), menu.forget()]))
+    Menu_buttons[0].place(x=165,y=30)
+    Menu_buttons[1] = Button(menu, text="New game", font=("Comic Sans", 20),bg=Day_or_Night.btn_Color, fg=Day_or_Night.fg, width = '10', height = '1', command=lambda:[btn_pressed("New game", player), always_1(player), Maps.Maps_order(player, Day_or_Night),
+                                                                                    hml_cl(hml,cl,player,Day_or_Night), canvas.pack(), Lower_Courtain.place(x=42, y=520), Menu.place(x=402,y=570), menu.forget()])
+    Menu_buttons[1].place(x=165,y=100)
+    Menu_buttons[2] = Button(menu, text="Instructions", font=("Comic Sans", 20),bg=Day_or_Night.btn_Color, fg=Day_or_Night.fg, width = '10', height = '1', command=lambda:[btn_pressed("Instructions", player), inst.pack(), Menu.place(x=400,y=570), menu.forget()])
+    Menu_buttons[2].place(x=165,y=170)
+    Menu_buttons[3] = Button(menu, text="Save", font=("Comic Sans", 20),bg=Day_or_Night.btn_Color, fg=Day_or_Night.fg, width = '10', height = '1', command=lambda:[btn_pressed("Save", player), save.pack(), Menu.place(x=360,y=570), menu.forget()])
+    Menu_buttons[3].place(x=165,y=240)
+    Menu_buttons[4] = Button(menu, text="Load", font=("Comic Sans", 20),bg=Day_or_Night.btn_Color, fg=Day_or_Night.fg, width = '10', height = '1', command=lambda:[btn_pressed("Load", player), load.pack(), Menu.place(x=360,y=570), menu.forget(), Save_Load.Great_Load()])
+    Menu_buttons[4].place(x=165,y=310)
 
 
 def initialize_every_button(root, canvas, player, Day_or_Night, Day, Night): #the main function from this module
     #These contain the buttons and labels
 
 
-    menu = Canvas(bg=Day_or_Night.bg, width=500, height=325, highlightthickness=0) #Generates the menu canvas
+    menu = Canvas(bg=Day_or_Night.bg, width=500, height=425, highlightthickness=0) #Generates the menu canvas
     menu.pack()#Loads the buttons
     inst = Canvas(bg=Day_or_Night.bg, width=300, height=325, highlightthickness=0) #Generates the instructions canvas
-    save = Canvas(bg=Day_or_Night.bg, width=500, height=325, highlightthickness=0) #Generates the save canvas
-    load = Canvas(bg=Day_or_Night.bg, width=500, height=325, highlightthickness=0) #Generates the load canvas
+    save = Canvas(bg=Day_or_Night.bg, width=500, height=470, highlightthickness=0) #Generates the save canvas
+    load = Canvas(bg=Day_or_Night.bg, width=500, height=470, highlightthickness=0) #Generates the load canvas
     Lower_Courtain = Canvas(bg=Day_or_Night.bg, width=500, height=75, highlightthickness=0) #This canvas hides the control buttons, the labels and the next/menu buttons
 
-    #>>>> LOWER SIDE
+
     cl = Label(Lower_Courtain, font=("MS Sans Serif", "15", "bold"), height=1, width=10, bg=Day_or_Night.menu_Color, fg="Purple", highlightthickness=1, highlightbackground="Purple")
     cl.place(x=5,y=6) #CL/ Current level
     hml = Label(Lower_Courtain, font=("MS Sans Serif", "15", "bold"), height=1, width=10, bg=Day_or_Night.menu_Color, fg="Red", highlightthickness=1, highlightbackground="Purple")
     hml.place(x=5,y=42) #HML/ How many left
     
-    Next_btn = Button(Lower_Courtain, bg="Grey", fg=Day_or_Night.fg, text="Next", width = '10', height = '1', state=DISABLED, command=lambda: [Maps.Maps_order(player, Day_or_Night),hml_cl(hml, cl, player, Day_or_Night), Turn_On(Next_btn)])
-    Next_btn.place(x=360,y=8)    
+    Next_btn = Button(Lower_Courtain, bg="Grey", fg=Day_or_Night.fg, text="Next", width = '10', height = '1', state=DISABLED, command=lambda: [Maps.Maps_order(player, Day_or_Night),hml_cl(hml, cl, player, Day_or_Night), Turn_On(Next_btn, Reset_btn)])
+    Next_btn.place(x=360,y=0)  
 
-    Menu = Button(root, bg=Day_or_Night.btn_Color, fg=Day_or_Night.fg, text="Menu", width = '10', height = '1', command=lambda: [btn_pressed("Menu", player), Turn_On( Next_btn), canvas.forget(),Lower_Courtain.forget(), inst.forget(), save.forget(), load.forget(),
-                                                                                    menu.pack(), Menu.place_forget()])
+    Reset_btn = Button(Lower_Courtain, bg="Yellow", fg=Day_or_Night.fg, text="Reset", width = '10', height = '1', command=lambda: [Maps.Maps_order(player, Day_or_Night)])
+    Reset_btn.place(x=360,y=26)   
+
+    Menu = Button(root, bg=Day_or_Night.btn_Color, fg=Day_or_Night.fg, text="Menu", width = '10', height = '1', command=lambda: [btn_pressed("Menu", player), Turn_On(Next_btn, Reset_btn), canvas.forget(),Lower_Courtain.place_forget(), inst.forget(), save.forget(), load.forget(),
+                                                                                    continue_on_off(player), menu.pack(), Menu.place_forget()])
     
-    #>>>> Places the control buttons
-    control_button(root, Lower_Courtain, 227, 0, player, Day_or_Night, hml, "Up", Next_btn, 0)
-    control_button(root, Lower_Courtain, 183, 25, player, Day_or_Night, hml, "Left", Next_btn, 1)
-    control_button(root, Lower_Courtain, 227, 50, player, Day_or_Night, hml, "Down", Next_btn, 2)
-    control_button(root, Lower_Courtain, 271, 25, player, Day_or_Night, hml, "Right", Next_btn, 3)
-        #Places the control buttons <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-    #Lower Side <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    # Places the control buttons
+    control_button(Lower_Courtain, 227, 0, player, Day_or_Night, hml, "Up", Next_btn, Reset_btn, 0)
+    control_button(Lower_Courtain, 183, 25, player, Day_or_Night, hml, "Left", Next_btn, Reset_btn, 1)
+    control_button(Lower_Courtain, 227, 50, player, Day_or_Night, hml, "Down", Next_btn, Reset_btn, 2)
+    control_button(Lower_Courtain, 271, 25, player, Day_or_Night, hml, "Right", Next_btn, Reset_btn, 3)
+
     
     instructions(inst, Day_or_Night, Day_or_Night.bg, Day_or_Night.fg)
     Save_Load_buttons(save, load, player, Day_or_Night) #Save canvas pack
@@ -91,7 +105,7 @@ def hml_cl(hml,cl,player,map): #This turns "boxes" into "box" if the new map has
     else:
         hml.config(text="%d boxes left"%map.Left_Spots)
     
-def color_shifter(root, menu, inst, save, load, Lower_Courtain, Start, Instructions, Save, Load, Menu, player, Day_or_Night):#Changes day/night mode
+def color_shifter(root, menu, inst, save, load, Lower_Courtain, Menu, player, Day_or_Night):#Changes day/night mode
     #canvases
     root.config(bg=Day_or_Night.bg)
     menu.config(bg=Day_or_Night.bg)
@@ -99,13 +113,9 @@ def color_shifter(root, menu, inst, save, load, Lower_Courtain, Start, Instructi
     save.config(bg=Day_or_Night.bg)
     load.config(bg=Day_or_Night.bg)
     Lower_Courtain.config(bg=Day_or_Night.bg)
-    #menu buttons
-    Start.config(bg=Day_or_Night.btn_Color)
-    Instructions.config(bg=Day_or_Night.btn_Color)
-    Save.config(bg=Day_or_Night.btn_Color)
-    Load.config(bg=Day_or_Night.btn_Color)
-    Menu.config(bg=Day_or_Night.menu_Color)
 
+    for i in Menu_buttons:
+        i.config(bg=Day_or_Night.btn_Color)
     for i in Instructions_btns:
         i.config(bg=Day_or_Night.bg)
     for i in Save_buttons:
@@ -116,7 +126,7 @@ def color_shifter(root, menu, inst, save, load, Lower_Courtain, Start, Instructi
     Maps.Maps_order(player, Day_or_Night)
 
 
-#>>>> Instructions
+#Instructions
 def inst_label(inst, text, size, bold, height, width, bg, fg, x, y): #Dynamic instruction labels - Nightmode changes it
     inst = Label(inst, text=text,font=("MS Sans Serif", size, bold), height=height, width=width, bg=bg, fg=fg)
     inst.place(x=x,y=y)
@@ -136,49 +146,43 @@ def details(inst, number, color1, color2, color3, bg, fg, y, sign): #this functi
 
 def instructions(inst, map, bg, fg):
     inst_label(inst, "Instructions", 17, "bold", 1, 10, bg, fg, 80, 5) #title
-    #>>>> Goal
+    # Goal
     inst_label(inst, "Goal", 16, "bold", 1, 4, bg, fg, -4, 55)
     inst_label(inst, "- Turn every  ", 16, "normal", 1, 10, bg, fg, 0, 90)
     static_inst_label(inst, "", 15, "bold", 1, 2, "Purple", fg, 120, 90) #box
     inst_label(inst, "into", 16, "normal", 1, 3, bg, fg, 152, 90)
     static_inst_label(inst, "", 15, "bold", 1, 2, "Magenta", fg, 192, 90) #box
-    #Goal <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-    #>>>> Details
+
+    # Details
     inst_label(inst, "Details", 16, "bold", 1, 5, bg, fg, 0, 125)
     details(inst, "1.", "Purple", "Green", "Purple", bg, fg, 160, "=") #Chest + Space
     details(inst, "2.", "Purple", "Yellow", "Magenta", bg, fg, 195, "=") #Chest + Goal
     details(inst, "3.", "Magenta", "Green", "Purple", bg, fg, 230, "=") #Chest out of goal
 
-        #>>>> Forbidden cases
+        # Forbidden cases
     inst_label(inst, "222", 16, "normal", 4, 40, bg, fg, 0, 265) #constant
     details(inst, "4.", "Purple", "Darkgrey", "Red", bg, fg, 265, "or") #Chest out of goal()
     inst_label(inst, "Not", 16, "normal", 1, 8, bg, fg, 190, 265) #constant
     details(inst, "5.", "Magenta", "Darkgrey", "Red", bg, fg, 300, "or") #Chest out of goal()
     inst_label(inst, "allowed", 16, "normal", 1, 8, bg, fg, 190, 300) #constant
-        # Forbidden cases <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-    #Details <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-#Instructions <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-#>>>> Save and Load functions - I couldn't merge load with save for some reason
-def save_btn(save, player, Day_or_Night, Slot, x, y, i,):
-     Save_buttons[i] = Button(save, text=Slot, font=("Comic Sans", 20),bg=Day_or_Night.btn_Color, fg=Day_or_Night.fg, width = '10', height = '1', command=lambda:[btn_pressed(Slot, player), Save_Load.Save(player)])
+
+# Save and Load functions - I couldn't merge load with save for some reason
+def save_btn(save, load, player, Day_or_Night, Slot, x, y, i):
+     Save_buttons[i] = Button(save, text=Slot, font=("Comic Sans", 33), bg=Day_or_Night.btn_Color, fg=Day_or_Night.fg, width = '8', height = '1', command=lambda:[btn_pressed(Slot, player), Save_Load.Save(player)])
      Save_buttons[i].place(x=x ,y=y)
 
-def load_btn(load, player, Day_or_Night, Slot, x, y, i):
-    Load_buttons[i] = Button(load, text=Slot, font=("Comic Sans", 20),bg=Day_or_Night.btn_Color, fg=Day_or_Night.fg, width = '10', height = '1', command=lambda:[btn_pressed(Slot, player), Save_Load.Load(player)])
-    Load_buttons[i].place(x=x ,y=y)
+     Load_buttons[i] = Button(load, text=Slot, font=("Comic Sans", 40), bg=Day_or_Night.btn_Color, fg=Day_or_Night.fg, width = '8', height = '1', command=lambda:[btn_pressed(Slot, player), Save_Load.Load(player)])
+     Load_buttons[i].place(x=x ,y=y)
+
+
 
 def Save_Load_buttons(save, load, player, Day_or_Night): #Saves the current level
-    save_btn(save, player, Day_or_Night, "Slot1", 25, 100, 0)
-    save_btn(save, player, Day_or_Night, "Slot2", 100, 190, 1)
-    save_btn(save, player, Day_or_Night, "Slot3", 225, 100, 2)
-    save_btn(save, player, Day_or_Night, "Slot4", 300, 190, 3)
-
-    load_btn(load, player, Day_or_Night, "Slot1", 25, 100, 0)
-    load_btn(load, player, Day_or_Night, "Slot2", 100, 190, 1)
-    load_btn(load, player, Day_or_Night, "Slot3", 225, 100, 2)
-    load_btn(load, player, Day_or_Night, "Slot4", 300, 190, 3)
+    save_btn(save, load, player, Day_or_Night, "Slot1", 135, 10, 0)
+    save_btn(save, load, player, Day_or_Night, "Slot2", 135, 130, 1)
+    save_btn(save, load, player, Day_or_Night, "Slot3", 135, 250, 2)
+    save_btn(save, load, player, Day_or_Night, "Slot4", 135, 370, 3)
 
       
     

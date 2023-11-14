@@ -1,12 +1,12 @@
 from tkinter import *
 
-map_matrix=[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],] #This contains the map (it turns into a 15x15 matrix)
+map_matrix=[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]] #This contains the map (it turns into a 15x15 matrix)
 
 #Takes the data from the custom made maps to place the player, the obstacles, the goals and the boxes
 def Maps_order(player, map):
     Which_Level[player.level](map_matrix, player, map)
     map.Left_Spots=map.Boxes
-    map_matrix[player.current_x][player.current_y].config(image=map.Player_space_image) #Places the player
+    map_matrix[player.current_x][player.current_y].config(image=map.Player_image) #Places the player
 
 
 #Standard map - generates the borders and the empty space 

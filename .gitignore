@@ -2,6 +2,7 @@
 *.gif
 *.exe
 *.bat
+Save.txt
 Lib/
 Scripts/Activate.ps1
 Scripts/Save.txt
@@ -10,4 +11,4 @@ Scripts/activate
 Scripts/tempCodeRunnerFile.py
 main/
 master/
-
+Scripts/Sprites/*.png

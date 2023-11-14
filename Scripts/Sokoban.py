@@ -85,21 +85,7 @@ Buttons_and_Labels.initialize_every_button(root, canvas, User, Day_or_Night, Day
 
 #######################################################################################
 root=Canvas()
-def strings_in_lists(name, container):   
-    for i in range(0,8): 
-        for j in range (0,3):    
-            frame=PhotoImage(file=name+"%s.png"%(i))
-            container.append(frame)
-
-strings_in_lists("Sprites/Player_dUSpace", Animation.Player_dUSpace)
-strings_in_lists("Sprites/Player_dUGoal", Animation.Player_dUGoal) 
-strings_in_lists("Sprites/Player_dLSpace", Animation.Player_dLSpace) 
-strings_in_lists("Sprites/Player_dLGoal", Animation.Player_dLGoal) 
-strings_in_lists("Sprites/Player_dRSpace", Animation.Player_dRSpace) 
-strings_in_lists("Sprites/Player_dRGoal", Animation.Player_dRGoal) 
-
-
-
+Animation.Initialise_images()
 Animation.Animation_Player(root, Day_or_Night, User, 0)
 root.mainloop()
 

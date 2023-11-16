@@ -1,5 +1,6 @@
 from tkinter import *
 import Maps
+import Var
 #up
 Player_dUSpace=[] #The sprites for moving to the left (day)
 Player_dUGoal=[] #The sprites for moving to the left (day)
@@ -74,16 +75,16 @@ def S2G_G2S(root, Day_or_Night, player, X_coordonate, Y_coordonate, Player_Up1, 
 
 def Animation_Inbetweens(root, Day_or_Night, player, X_coordonate, Y_coordonate, Player_Up1, Player_Up2, Player_Left1, Player_Left2, Player_Down1, Player_Down2, Player_Right1, Player_Right2, old_area): #Space to goal or goal to space
     #This happens in Goal_Space function (Control_Logic module). Step_over is one step behind since the function's called after.
-    if(player.step_over==0 and  Maps.map_matrix[player.current_x-(X_coordonate)][player.current_y-(Y_coordonate)].cget("image")==str(Day_or_Night.Chest_goal_image)): #Space to goal - Box
+    if(player.step_over==0 and  Maps.map_matrix[player.current_x-(X_coordonate)][player.current_y-(Y_coordonate)].cget("text")==Var.CoG): #Space to goal - Box
         S2G_G2S(root, Day_or_Night, player, X_coordonate, Y_coordonate, Player_Up1, Player_Up2, Player_Left1, Player_Left2, Player_Down1, Player_Down2, Player_Right1, Player_Right2, old_area)
         print("cbaba %s"%player.step_over)
-    elif(player.step_over==1 and Maps.map_matrix[player.current_x-(X_coordonate)][player.current_y-(Y_coordonate)].cget("image")==str(Day_or_Night.Chest_space_image)): #Goal to space - Box
+    elif(player.step_over==1 and Maps.map_matrix[player.current_x-(X_coordonate)][player.current_y-(Y_coordonate)].cget("text")==Var.CoS): #Goal to space - Box
         S2G_G2S(root, Day_or_Night, player, X_coordonate, Y_coordonate, Player_Up1, Player_Up2, Player_Left1, Player_Left2, Player_Down1, Player_Down2, Player_Right1, Player_Right2, old_area)
         print("cmama %s"%player.step_over)  
-    elif(player.step_over==0 and Maps.map_matrix[player.current_x-(X_coordonate)][player.current_y-(Y_coordonate)].cget("image")==str(Day_or_Night.Goal_image)): #Space to goal - No box
+    elif(player.step_over==0 and Maps.map_matrix[player.current_x-(X_coordonate)][player.current_y-(Y_coordonate)].cget("text")==Var.Goal): #Space to goal - No box
         S2G_G2S(root, Day_or_Night, player, X_coordonate, Y_coordonate, Player_Up1, Player_Up2, Player_Left1, Player_Left2, Player_Down1, Player_Down2, Player_Right1, Player_Right2, old_area)
         print("baba %s"%player.step_over)
-    elif(player.step_over==1 and Maps.map_matrix[player.current_x-(X_coordonate)][player.current_y-(Y_coordonate)].cget("image")==str(Day_or_Night.Space_image)): #Space to goal - No box
+    elif(player.step_over==1 and Maps.map_matrix[player.current_x-(X_coordonate)][player.current_y-(Y_coordonate)].cget("text")==Var.Space): #Space to goal - No box
         S2G_G2S(root, Day_or_Night, player, X_coordonate, Y_coordonate, Player_Up1, Player_Up2, Player_Left1, Player_Left2, Player_Down1, Player_Down2, Player_Right1, Player_Right2, old_area)
         print("mama %s"%player.step_over)    
     else:                                                                                                                                      #Space to Space or Goal to Goal - No box

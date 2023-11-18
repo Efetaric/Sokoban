@@ -31,8 +31,8 @@ position(root)
 
 User = Classes.Player(
     level=1,
-    current_x=1,
-    current_y=2, 
+    X=1,
+    Y=2, 
     step_over=0, 
     Button_Pressed='No_Button_Pressed',
     inbetween=0)
@@ -81,9 +81,11 @@ Day_or_Night = Classes.Day_Night(
 root.configure(background=Day_or_Night.bg)
 canvas = Canvas(bg="Black", highlightthickness=0)
 Maps.Standard_map(canvas, Day_or_Night)#Generates the map
-Buttons_and_Labels.initialize_every_button(root, canvas, User, Day_or_Night, Day, Night)
+Buttons_and_Labels.initialize_every_button(
+    root, canvas, User, 
+    Day_or_Night, Day, Night)
 
-#######################################################################################
+########################################################################
 root=Canvas()
 Animation.Initialise_images()
 Animation.Animation_Player(root, Day_or_Night, User, 0)

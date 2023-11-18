@@ -1,23 +1,24 @@
 from tkinter import *
 
-###############################################################
+#########################################################
 class Player:
-    def __init__(self, level, current_x, current_y, step_over, Button_Pressed, inbetween):
+    def __init__(
+            self, level, X, Y, step_over, 
+            Button_Pressed, inbetween):
         self.level = level
-        self.current_x = current_x
-        self.current_y = current_y
+        self.X = X
+        self.Y = Y
         self.step_over = step_over
         self.Button_Pressed = Button_Pressed
-        self.inbetween = inbetween # Very important, it is used to determine the type of inbetween
-
-
-
-
-
+        self.inbetween = inbetween 
 
 
 class Aspect: #This is for day and night mode
-    def __init__(self, bg, fg, btn_Color, menu_Color, Mode,  Border_image, Border_image2, Obstacle_image, Space_image, Goal_image, Player_image, Chest_space_image, Chest_goal_image):
+    def __init__(
+            self, bg, fg, btn_Color, menu_Color, Mode,  
+            Border_image, Border_image2, Obstacle_image, 
+            Space_image, Goal_image, Player_image, 
+            Chest_space_image, Chest_goal_image):
         #buttons/ canvas
         self.bg=bg #canvas background
         self.fg=fg #font
@@ -42,7 +43,7 @@ class Day_Night:
         #Day initialization
             #Buttons
         self.mode=1 #day=1, default is day
-        self.Boxes = Boxes #this is used only to initialize the left spots, but it can be used to print "x boxes out of y boxes"
+        self.Boxes = Boxes #Initializes the left spots
         self.Left_Spots = Left_Spots
         self.bg=Day.bg #canvas background
         self.fg=Day.fg #font
@@ -108,5 +109,5 @@ class Day_Night:
             
         
 
-################################################################################
+#######################################################################
         

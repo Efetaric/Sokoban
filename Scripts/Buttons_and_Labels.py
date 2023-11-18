@@ -127,8 +127,7 @@ def menu_buttons(root, canvas, menu, inst, save, load,
         bg=Day_or_Night.btn_Color, fg=Day_or_Night.fg, 
         width = '10', height = '1', command=lambda:[
             btn_pressed("Load", player), load.pack(), 
-            Menu.place(x=360,y=570), menu.forget(), 
-            Save_Load.Great_Load()])
+            Menu.place(x=360,y=570), menu.forget()])
     Menu_buttons[4].place(x=165,y=310)
 
 #the main function from this module

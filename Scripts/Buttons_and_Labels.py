@@ -2,7 +2,7 @@ from tkinter import *
 import Maps
 import Control_Logic
 import Save_Load
-
+import Events
 
 Menu_buttons=[[],[],[],[],[]] #Stores the menu buttons
 CONTROL_buttons=[[],[],[],[]] #Stores the control buttons
@@ -32,6 +32,8 @@ def control_button(
             Turn_Off(map.Left_Spots, Next_btn, Reset_btn)])
     CONTROL_buttons[i].place(x=x, y=y)
 
+
+
 #Disables the control buttons/ reset & activates next button
 def Turn_Off(Left_Spots, Next_btn, Reset_btn): 
     if(Left_Spots==0):
@@ -46,6 +48,13 @@ def Turn_On(Next_btn, Reset_btn):
         CONTROL_buttons[i].config(state=NORMAL, bg="Purple")
     Reset_btn.config(state=NORMAL, bg="Yellow")
     Next_btn.config(state=DISABLED, bg="Grey")
+
+#These 2 are used to block keyboard control when the map is not projected.
+def Ready(Day_or_Night):
+    Day_or_Night.state="Ready"
+def Not_ready(Day_or_Night):
+    Day_or_Night.state="Not_Ready"
+
 #Control buttons & the state of controls and next <<<<<<<<<<<<<<<<<<<<<
 def always_1(player): #Level resets to 1
     player.level=1
@@ -56,6 +65,13 @@ def continue_on_off(player):#turns on/ off the continue button
     else:
         Menu_buttons[0].config(state=NORMAL)
 
+#Loads/ Reloads the correct map.
+def refresh_or_change(player, Day_or_Night):
+    if (Day_or_Night.Left_Spots==0):
+        Maps.Maps_order(player, Day_or_Night)
+    else:
+        Maps.Refresh(Day_or_Night)
+    
 #Spawn the menu buttons
 def menu_buttons(root, canvas, menu, inst, save, load, 
                  Lower_Courtain, hml, cl, Menu, player, 
@@ -65,7 +81,8 @@ def menu_buttons(root, canvas, menu, inst, save, load,
         text="D/N", image=Day_or_Night.Mode, 
         width = '25', height = '25', 
         command=lambda: [
-            Day_or_Night.Switch(Day,Night),
+            Day_or_Night.Switch(Day, Night),
+            Maps.Refresh(Day_or_Night),
             color_shifter(root, menu, inst, 
                           save, load, 
                           Lower_Courtain,
@@ -79,12 +96,13 @@ def menu_buttons(root, canvas, menu, inst, save, load,
         fg=Day_or_Night.fg, width = '10',
         height = '1', state=DISABLED, 
         command=lambda:[
-            btn_pressed("Continue", player), 
-            Maps.Maps_order(player, Day_or_Night), 
+            btn_pressed("Continue", player),
+            refresh_or_change(player, Day_or_Night),
             hml_cl(hml,cl,player,Day_or_Night), 
             canvas.pack(), menu.forget(),
             Lower_Courtain.place(x=42, y=520), 
-            Menu.place(x=402,y=570)]))
+            Menu.place(x=402,y=570), 
+            Ready(Day_or_Night)]))
     Menu_buttons[0].place(x=165,y=30)
 
     Menu_buttons[1] = Button(
@@ -100,7 +118,8 @@ def menu_buttons(root, canvas, menu, inst, save, load,
             hml_cl(hml,cl,player,Day_or_Night), 
             canvas.pack(), menu.forget(), 
             Lower_Courtain.place(x=42, y=520), 
-            Menu.place(x=402,y=570), menu.forget()])
+            Menu.place(x=402,y=570), menu.forget(),
+            Ready(Day_or_Night)])
     Menu_buttons[1].place(x=165,y=100)
 
     Menu_buttons[2] = Button(
@@ -126,15 +145,16 @@ def menu_buttons(root, canvas, menu, inst, save, load,
         menu, text="Load", font=("Comic Sans", 20),
         bg=Day_or_Night.btn_Color, fg=Day_or_Night.fg, 
         width = '10', height = '1', command=lambda:[
-            btn_pressed("Load", player), load.pack(), 
-            Menu.place(x=360,y=570), menu.forget()])
+            btn_pressed("Load", player), 
+            Save_Load.Great_Load(), 
+            Menu.place(x=360,y=570), 
+            load.pack(), menu.forget()])
     Menu_buttons[4].place(x=165,y=310)
 
 #the main function from this module
 def initialize_every_button(root, canvas, player, 
                             Day_or_Night, Day, Night): 
-    #These contain the buttons and labels
-    
+
     #Generates the menu canvas
     menu = Canvas(
         bg=Day_or_Night.bg, 
@@ -180,7 +200,8 @@ def initialize_every_button(root, canvas, player,
         command=lambda:[
             Maps.Maps_order(player, Day_or_Night),
             hml_cl(hml, cl, player, Day_or_Night), 
-            Turn_On(Next_btn, Reset_btn)])
+            Turn_On(Next_btn, Reset_btn), 
+            Ready(Day_or_Night)])
     Next_btn.place(x=360,y=0)  
 
     Reset_btn = Button(
@@ -192,10 +213,14 @@ def initialize_every_button(root, canvas, player,
     Menu = Button(
         root, bg=Day_or_Night.btn_Color, fg=Day_or_Night.fg, 
         text="Menu", width = '10', height = '1', command=lambda: [
-            btn_pressed("Menu", player), Turn_On(Next_btn, Reset_btn), 
-            canvas.forget(), Lower_Courtain.place_forget(), inst.forget(), 
-            save.forget(), load.forget(), continue_on_off(player), 
-            menu.pack(), Menu.place_forget()])
+            btn_pressed("Menu", player), 
+            Turn_On(Next_btn, Reset_btn), 
+            canvas.forget(), load.forget(), 
+            Lower_Courtain.place_forget(), 
+            inst.forget(), save.forget(), 
+            continue_on_off(player), 
+            menu.pack(), Menu.place_forget(),
+            Not_ready(Day_or_Night)])
     
     # Places the control buttons
     control_button(
@@ -229,6 +254,12 @@ def initialize_every_button(root, canvas, player,
         save, load, Lower_Courtain, 
         hml, cl, Menu, player, 
         Day_or_Night, Day, Night)
+    
+    #Contains every event
+    Events.Events(
+        root, canvas, Lower_Courtain, 
+        player, Day_or_Night, 
+        hml, cl, Next_btn, Reset_btn)
 
 #Turns "boxes" into "box" (if map has 1 box) & changes the current level sign
 def hml_cl(hml,cl,player,map): 
@@ -260,7 +291,9 @@ def color_shifter(
     for i in Load_buttons:
         i.config(bg=Day_or_Night.btn_Color, fg=Day_or_Night.fg)
     
-    Maps.Maps_order(player, Day_or_Night)
+    #Maps.Maps_order(player, Day_or_Night)
+
+    
 
 
 #Instructions
@@ -375,7 +408,7 @@ def save_btn(
      Save_buttons[i].place(x=x ,y=y)
 
      Load_buttons[i] = Button(
-         load, text=Slot, font=("Comic Sans", 40), 
+         load, text=Slot, font=("Comic Sans", 33), 
          bg=Day_or_Night.btn_Color, fg=Day_or_Night.fg, 
          width = '8', height = '1', command=lambda:[
              btn_pressed(Slot, player), 

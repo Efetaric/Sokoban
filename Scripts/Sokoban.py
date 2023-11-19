@@ -47,13 +47,14 @@ Day = Classes.Aspect(
     Mode='Sprites/Day_Mode.png',
     #Map
     Border_image="Sprites/Wall_dTop.png",
-    Border_image2="Sprites/Wall_dBottom.png", 
+    Border_image1="Sprites/Wall_dBottom.png", 
     Obstacle_image="Sprites/Obstacle_dBush1.png", 
     Space_image="Sprites/Space_day.png", 
     Goal_image="Sprites/Goal_day.png", 
     Player_image="Sprites/Player_dRSpace0.png", 
     Chest_space_image="Sprites/Chest_dSpace.png", 
     Chest_goal_image="Sprites/Chest_dGoal.png")
+
 
 Night = Classes.Aspect(
     bg="Black", 
@@ -64,7 +65,7 @@ Night = Classes.Aspect(
     
     #Map
     Border_image="Sprites/Wall_dTop.png",
-    Border_image2="Sprites/Wall_dBottom.png", 
+    Border_image1="Sprites/Wall_dBottom.png", 
     Obstacle_image="Sprites/Obstacle_dBush1.png", 
     Space_image="Sprites/Space_day.png", 
     Goal_image="Sprites/Goal_day.png", 
@@ -80,15 +81,16 @@ Day_or_Night = Classes.Day_Night(
 
 root.configure(background=Day_or_Night.bg)
 canvas = Canvas(bg="Black", highlightthickness=0)
-Maps.Standard_map(canvas, Day_or_Night)#Generates the map
+Maps.Standard_map(canvas)#Generates the map
 Buttons_and_Labels.initialize_every_button(
     root, canvas, User, 
     Day_or_Night, Day, Night)
 
+
 ########################################################################
-root=Canvas()
 Animation.Initialise_images()
 Animation.Animation_Player(root, Day_or_Night, User, 0)
+
 root.mainloop()
 
 

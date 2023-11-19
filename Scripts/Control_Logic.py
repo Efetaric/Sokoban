@@ -7,20 +7,23 @@ import Var
 #Movement and anti-collision function (main func in module)
 def walk(root, player, map, hml):
     #every press activates the inbetweens
-    player.inbetween=1 
-    print(player.Button_Pressed)
-    match player.Button_Pressed:
-        case "Up":
-            direction(root, Maps.map_matrix, player, 0, -1, map)
-        case "Left":
-            direction(root, Maps.map_matrix, player, -1, 0, map)
-        case "Down":
-            direction(root, Maps.map_matrix, player, 0, 1, map)
-        case "Right":
-            direction(root, Maps.map_matrix, player, 1, 0, map)
+   
+    if (map.state=="Ready"):
+        player.inbetween=1 
+        print(player.Button_Pressed)
+        match player.Button_Pressed:
+            case "Up":
+                direction(root, Maps.map_matrix, player, 0, -1, map)
+            case "Left":
+                direction(root, Maps.map_matrix, player, -1, 0, map)
+            case "Down":
+                direction(root, Maps.map_matrix, player, 0, 1, map)
+            case "Right":
+                direction(root, Maps.map_matrix, player, 1, 0, map)
 
-    print(map.Left_Spots)
-    boxes_left(player, map, hml)
+        print(map.Left_Spots)
+        boxes_left(player, map, hml)
+        
     player.inbetween=0
 
 
@@ -119,7 +122,7 @@ def step_over_with_box(root, matrix, player, X, Y, map):
 def Goal_or_Space(root, player, map):
 
     if (player.step_over==1):
-        Animation.Inbetween_Order(\
+        Animation.Inbetween_Order(
             root, map, player, 
             Animation.Player_dUGoal, 
             Animation.Player_dUSpace, 
@@ -129,7 +132,7 @@ def Goal_or_Space(root, player, map):
             Animation.Player_dRSpace, 
             Animation.Player_dRGoal, 
             Animation.Player_dRSpace, 
-            map.Goal_image)
+            Var.Goal, map.Goal_image)
             
     elif (player.step_over==0):
         Animation.Inbetween_Order(
@@ -142,7 +145,7 @@ def Goal_or_Space(root, player, map):
             Animation.Player_dLGoal, 
             Animation.Player_dRSpace, 
             Animation.Player_dRGoal, 
-            map.Space_image)
+            Var.Space, map.Space_image)
 
 #this function changes the number of boxes left
 #When every box is moved to its area, the control buttons MUST BE DISABLED!
@@ -156,6 +159,7 @@ def boxes_left(player,map, hml):
     else:
         hml.config(text="No boxes left")
         player.level+=1
+        map.state="Not_Ready"
 
 
         

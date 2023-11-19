@@ -16,7 +16,7 @@ class Player:
 class Aspect: #This is for day and night mode
     def __init__(
             self, bg, fg, btn_Color, menu_Color, Mode,  
-            Border_image, Border_image2, Obstacle_image, 
+            Border_image, Border_image1, Obstacle_image, 
             Space_image, Goal_image, Player_image, 
             Chest_space_image, Chest_goal_image):
         #buttons/ canvas
@@ -28,7 +28,7 @@ class Aspect: #This is for day and night mode
 
             #map
         self.Border_image = PhotoImage(file=Border_image)
-        self.Border_image2 = PhotoImage(file=Border_image2)
+        self.Border_image1 = PhotoImage(file=Border_image1)
         self.Obstacle_image = PhotoImage(file=Obstacle_image)
         self.Space_image = PhotoImage(file=Space_image)
         self.Goal_image = PhotoImage(file=Goal_image)
@@ -41,7 +41,8 @@ class Aspect: #This is for day and night mode
 class Day_Night:
     def __init__(self, Boxes, Left_Spots, Day):
         #Day initialization
-            #Buttons
+        #Buttons
+        self.state="Not_Ready"#Keeps under control the control keys
         self.mode=1 #day=1, default is day
         self.Boxes = Boxes #Initializes the left spots
         self.Left_Spots = Left_Spots
@@ -53,7 +54,7 @@ class Day_Night:
 
         #map
         self.Border_image = Day.Border_image
-        self.Border_image2 = Day.Border_image2
+        self.Border_image1 = Day.Border_image1
         self.Obstacle_image = Day.Obstacle_image
         self.Space_image = Day.Space_image
         self.Goal_image = Day.Goal_image
@@ -65,8 +66,9 @@ class Day_Night:
     def Switch(self, Day, Night):
         print(self.mode)
         print(self.Border_image)
-        print(self.Border_image2)
-        if (self.mode<1):#day mode
+        print(self.Border_image1)
+        #day mode
+        if (self.mode<1):
             self.mode=1
             print("Day mode")
             self.bg=Day.bg #canvas background
@@ -77,7 +79,7 @@ class Day_Night:
 
             #map
             self.Border_image = Day.Border_image
-            self.Border_image2 = Day.Border_image2
+            self.Border_image1 = Day.Border_image1
             self.Obstacle_image = Day.Obstacle_image
             self.Space_image = Day.Space_image
             self.Goal_image = Day.Goal_image
@@ -85,8 +87,9 @@ class Day_Night:
             self.Chest_space_image = Day.Chest_space_image
             self.Chest_goal_image = Day.Chest_goal_image
             return self.mode
-
-        else:             #night mode
+        
+        #night mode
+        else:             
             self.mode=0
             print("Night mode")
             self.bg=Night.bg #canvas background
@@ -97,7 +100,7 @@ class Day_Night:
 
             #map
             self.Border_image = Night.Border_image
-            self.Border_image2 = Night.Border_image2
+            self.Border_image1 = Night.Border_image1
             self.Obstacle_image = Night.Obstacle_image
             self.Space_image = Night.Space_image
             self.Goal_image = Night.Goal_image

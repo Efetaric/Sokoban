@@ -56,20 +56,23 @@ def Orientation(
 def inb_short(
         Day_or_Night, player, X, 
         Y, Player_Up, Player_Left, 
-        Player_Down, Player_Right, i ):
+        Player_Down, Player_Right, i):
     frame=Orientation(
         Day_or_Night, player, 
         Player_Up, Player_Left, 
         Player_Down, Player_Right, i)
-    Maps.map_matrix[player.X+X][player.Y+Y].config(image=frame)
+    Maps.map_matrix[player.X+X][player.Y+Y].config(text=Var.Player, image=frame)
 
-def erased(player, X, Y, old_area):
-    Maps.map_matrix[player.X+X][player.Y+Y].config(image=old_area)
+#Returns the old space to normal 
+def erased(player, X, Y, old_text, old_area):
+    Maps.map_matrix[player.X+X][player.Y+Y].config(text=old_text, image=old_area)
 
+    
 def S2S_G2G(
         root, Day_or_Night, player, 
         X, Y, Player_Up, Player_Left, 
-        Player_Down, Player_Right, old_area):
+        Player_Down, Player_Right, 
+        old_text, old_area):
 
     #old box frame1 
     root.after(
@@ -92,15 +95,17 @@ def S2S_G2G(
         30, inb_short, Day_or_Night, player, 
         0, 0, Player_Up, Player_Left, 
         Player_Down, Player_Right, 27) 
+    #Old normal frame
     root.after(
         30, erased, player, 
-        X, Y, old_area) #Old normal frame
+        X, Y, old_text, old_area) 
 
 def S2G_G2S(
         root, Day_or_Night, player, X, Y, 
         Player_Up1, Player_Up2, Player_Left1, 
         Player_Left2, Player_Down1, Player_Down2, 
-        Player_Right1, Player_Right2, old_area):
+        Player_Right1, Player_Right2, old_text, 
+        old_area):
     root.after(
         0, inb_short, Day_or_Night, player, 
         X, Y, Player_Up1, Player_Left1, 
@@ -119,9 +124,9 @@ def S2G_G2S(
         Player_Down2, Player_Right2, 27)
     root.after(
         30, erased, player, 
-        X, Y, old_area)
+        X, Y, old_text, old_area)
     
-#Space to goal or goal to space
+#Space to goal or goal to space (player)
 #Happens in Goal_Space function (Control_Logic module). 
 # =>Step_over is one step behind since the function's called after.
 def Animation_Inbetweens(
@@ -130,7 +135,7 @@ def Animation_Inbetweens(
         Player_Left1, Player_Left2, 
         Player_Down1, Player_Down2, 
         Player_Right1, Player_Right2, 
-        old_area):
+        old_text, old_area):
 
     #Space to goal - Box
     if(player.step_over==0 
@@ -139,7 +144,7 @@ def Animation_Inbetweens(
             root, Day_or_Night, player, X, Y, 
             Player_Up1, Player_Up2, Player_Left1, 
             Player_Left2, Player_Down1, Player_Down2, 
-            Player_Right1, Player_Right2, old_area)
+            Player_Right1, Player_Right2, old_text, old_area)
         print("cbaba %s"%player.step_over)
 
     #Goal to space - Box
@@ -151,7 +156,7 @@ def Animation_Inbetweens(
             Player_Left1, Player_Left2, 
             Player_Down1, Player_Down2, 
             Player_Right1, Player_Right2, 
-            old_area)
+            old_text, old_area)
         print("cmama %s"%player.step_over)  
 
     #Space to goal - No box
@@ -163,7 +168,7 @@ def Animation_Inbetweens(
             Player_Left1, Player_Left2, 
             Player_Down1, Player_Down2, 
             Player_Right1, Player_Right2, 
-            old_area)
+            old_text, old_area)
         print("baba %s"%player.step_over)
     #Space to goal - No box
     elif(player.step_over==1 
@@ -174,22 +179,24 @@ def Animation_Inbetweens(
             Player_Left1, Player_Left2, 
             Player_Down1, Player_Down2, 
             Player_Right1, Player_Right2, 
-            old_area)
+            old_text, old_area)
         print("mama %s"%player.step_over)    
     else:                                                                                                                                      #Space to Space or Goal to Goal - No box
         S2S_G2G(
             root, Day_or_Night, player, X, Y, 
             Player_Up1, Player_Left1, 
             Player_Down1, Player_Right1, 
-            old_area)    
+            old_text, old_area)    
+        print("sda")
 
+#Inbetween for player
 def Inbetween_Order(
         root, Day_or_Night, player, 
         Player_Up1, Player_Up2, 
         Player_Left1, Player_Left2, 
         Player_Down1, Player_Down2, 
         Player_Right1, Player_Right2, 
-        old_area):
+        old_text, old_area):
     match player.Button_Pressed:
         case "Up":
             Animation_Inbetweens(
@@ -198,7 +205,7 @@ def Inbetween_Order(
                 Player_Left1, Player_Left2, 
                 Player_Down1, Player_Down2, 
                 Player_Right1, Player_Right2, 
-                old_area)
+                old_text, old_area)
         case "Left":
             Animation_Inbetweens(
                 root, Day_or_Night, player, 
@@ -206,7 +213,7 @@ def Inbetween_Order(
                 Player_Left1, Player_Left2, 
                 Player_Down1, Player_Down2, 
                 Player_Right1, Player_Right2, 
-                old_area)
+                old_text, old_area)
         case "Down":
             Animation_Inbetweens(
                 root, Day_or_Night, player, 
@@ -214,7 +221,7 @@ def Inbetween_Order(
                 Player_Left1, Player_Left2, 
                 Player_Down1, Player_Down2, 
                 Player_Right1, Player_Right2, 
-                old_area)
+                old_text, old_area)
         case "Right":
             Animation_Inbetweens(
                 root, Day_or_Night, player, 
@@ -222,7 +229,7 @@ def Inbetween_Order(
                 Player_Left1, Player_Left2, 
                 Player_Down1, Player_Down2, 
                 Player_Right1, Player_Right2, 
-                old_area)
+                old_text, old_area)
 
 
 def Animation_Player(root, Day_or_Night, player, i):

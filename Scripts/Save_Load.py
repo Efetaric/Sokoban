@@ -37,7 +37,9 @@ def Save (player):
         f.write(fullstring)
         f.close()
 
-#This function is used to disable/enable and update the load buttons with the data
+#Used to disable/enable and update the load buttons with the data
+#For the Load button from the Menu canvas
+def Great_Load(): 
     try: # File found & read
         f = open("Save.txt", "r")
         d = f.read()
@@ -91,7 +93,8 @@ def Slot_finder(d, Slot, i):
         container_Date = d[Index_D+5:Index_T] 
         container_Time = d[Index_T+5:Index_End]
         Buttons_and_Labels.Load_buttons[i].config(
-            state=NORMAL, bg="Green", text="\n%s\n%s\n%s"%(
+            state=NORMAL, bg="Green", 
+            text="\n%s\n%s\n%s"%(
                 container_Level, 
                 container_Date, 
                 container_Time), 

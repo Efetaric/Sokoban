@@ -181,7 +181,8 @@ def Animation_Inbetweens(
             Player_Right1, Player_Right2, 
             old_text, old_area)
         print("mama %s"%player.step_over)    
-    else:                                                                                                                                      #Space to Space or Goal to Goal - No box
+    #Space to Space or Goal to Goal - No box
+    else:                                                                                                                                      
         S2S_G2G(
             root, Day_or_Night, player, X, Y, 
             Player_Up1, Player_Left1, 

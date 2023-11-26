@@ -2,17 +2,19 @@ from tkinter import *
 import Maps
 import Var
 #up
-Player_dUSpace=[] #The sprites for moving to the left (day)
-Player_dUGoal=[] #The sprites for moving to the left (day)
+Player_dUSpace=[] #The sprites for moving to the top (day)
+Player_dUGoal=[] #The sprites for moving to the top (day)
 #left
 Player_dLGoal=[] #The sprites for moving to the left (day)
 Player_dLSpace=[] #The sprites for moving to the left (day)
 #right
 Player_dRSpace=[] #The sprites for moving to the right (day)
 Player_dRGoal=[] #The sprites for moving to the right (day)
+#Wall torch
+Player_nTorch=[] #Torch sprites
 
 
-def strings_in_lists(name, container):
+def Pstrings_in_lists(name, container):
     for i in range(0,8):  #First 24 frames = standard animation
         for j in range (0,3):    
             frame=PhotoImage(file=name+"%s.png"%(i))
@@ -23,19 +25,22 @@ def strings_in_lists(name, container):
         frame=PhotoImage(file=name+"_Inb%s.png"%(i))
         container.append(frame)
         print(frame)
+
+def Mstrings_in_lists(name, container):
+    for i in range(0,4):  #First 24 frames = standard animation
+        frame=PhotoImage(file=name+"%s.png"%(i))
+        container.append(frame)
     
 
-#strings_in_lists("Sprites/Player_dRSpace", Player_dRSpace) 
-#strings_in_lists("Sprites/Player_dRGoal", Player_dRGoal) 
-#strings_in_lists("Sprites/Player_dLSpace", Player_dLSpace) 
-#strings_in_lists("Sprites/Player_dLGoal", Player_dLGoal) 
 def Initialise_images():
-    strings_in_lists("Sprites/Player_dUSpace", Player_dUSpace)
-    strings_in_lists("Sprites/Player_dUGoal", Player_dUGoal) 
-    strings_in_lists("Sprites/Player_dLSpace", Player_dLSpace) 
-    strings_in_lists("Sprites/Player_dLGoal", Player_dLGoal) 
-    strings_in_lists("Sprites/Player_dRSpace", Player_dRSpace) 
-    strings_in_lists("Sprites/Player_dRGoal", Player_dRGoal) 
+    Pstrings_in_lists("Sprites/Player_dUSpace", Player_dUSpace)
+    Pstrings_in_lists("Sprites/Player_dUGoal", Player_dUGoal) 
+    Pstrings_in_lists("Sprites/Player_dLSpace", Player_dLSpace) 
+    Pstrings_in_lists("Sprites/Player_dLGoal", Player_dLGoal) 
+    Pstrings_in_lists("Sprites/Player_dRSpace", Player_dRSpace) 
+    Pstrings_in_lists("Sprites/Player_dRGoal", Player_dRGoal)
+    
+    Mstrings_in_lists("Sprites/Wall_nTorch", Player_nTorch) 
 
 
 def Orientation(
@@ -74,31 +79,22 @@ def S2S_G2G(
         Player_Down, Player_Right, 
         old_text, old_area):
 
-    #old box frame1 
-    root.after(
-        0, inb_short, Day_or_Night, 
-        player, X, Y, Player_Up, 
-        Player_Left, Player_Down, 
-        Player_Right, 24) 
-    #Old box frame2
+
+    #Old box frame
     root.after(
         10, inb_short, Day_or_Night, player, 
         X, Y, Player_Up, Player_Left, 
         Player_Down, Player_Right, 25) 
+    
+    root.after(
+        10,erased, player, X, Y, old_text, old_area)
+    
     #New box frame1
     root.after(
         10, inb_short, Day_or_Night, player, 
         0, 0, Player_Up, Player_Left, 
         Player_Down, Player_Right, 26)
-    #New box frame 2 
-    root.after(
-        30, inb_short, Day_or_Night, player, 
-        0, 0, Player_Up, Player_Left, 
-        Player_Down, Player_Right, 27) 
-    #Old normal frame
-    root.after(
-        30, erased, player, 
-        X, Y, old_text, old_area) 
+
 
 def S2G_G2S(
         root, Day_or_Night, player, X, Y, 
@@ -115,6 +111,9 @@ def S2G_G2S(
         X, Y, Player_Up1, Player_Left1, 
         Player_Down1, Player_Right1, 25)
     root.after(
+        10, erased, player, 
+        X, Y, old_text, old_area)
+    root.after(
         10,inb_short, Day_or_Night, player, 
         0, 0, Player_Up2, Player_Left2, 
         Player_Down2, Player_Right2, 26)
@@ -122,9 +121,7 @@ def S2G_G2S(
         30, inb_short, Day_or_Night, player, 
         0, 0, Player_Up2, Player_Left2, 
         Player_Down2, Player_Right2, 27)
-    root.after(
-        30, erased, player, 
-        X, Y, old_text, old_area)
+
     
 #Space to goal or goal to space (player)
 #Happens in Goal_Space function (Control_Logic module). 
@@ -233,29 +230,46 @@ def Inbetween_Order(
                 old_text, old_area)
 
 
-def Animation_Player(root, Day_or_Night, player, i):
+def Animation_Player(root, Day_or_Night, player, cf):
     if (player.inbetween==0):
-        if(i<23): 
+        if(cf<23): 
 
             if (player.step_over==0):
                 frame=Orientation(
                     Day_or_Night, player, 
                     Player_dUSpace, Player_dLSpace, 
-                    Player_dRSpace, Player_dRSpace, i)
+                    Player_dRSpace, Player_dRSpace, cf)
                 Maps.map_matrix[player.X][player.Y].config(image=frame)
 
             elif (player.step_over==1):
                 frame=Orientation(
                     Day_or_Night, player, 
                     Player_dUGoal, Player_dLGoal, 
-                    Player_dRGoal, Player_dRGoal, i)
+                    Player_dRGoal, Player_dRGoal, cf)
                 Maps.map_matrix[player.X][player.Y].config(image=frame)
-    
+
+            cf += 1
         else:
-            i=0
-        i += 1
+            cf=0
+
             
-    root.after(20, Animation_Player, root, Day_or_Night, player, i)
+    root.after(10, Animation_Player, root, Day_or_Night, player, cf)
+
+def Animation_Map(root, Day_or_Night, cf):
+    if (Day_or_Night.mode==0):
+        if(cf<4):
+            for i in range(1,17):
+                for j in range (1,15): 
+                    if (Maps.map_matrix[j][i].cget("text")==Var.Torch):
+                        Maps.map_matrix[j][i].config(image=Player_nTorch[cf])
+            cf += 1
+        else:
+            cf=0
+    root.after(100,Animation_Map, root, Day_or_Night, cf)
+        
+        
+
+
 
         
         

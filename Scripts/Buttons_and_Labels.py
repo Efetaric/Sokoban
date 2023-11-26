@@ -100,8 +100,8 @@ def menu_buttons(root, canvas, menu, inst, save, load,
             refresh_or_change(player, Day_or_Night),
             hml_cl(hml,cl,player,Day_or_Night), 
             canvas.pack(), menu.forget(),
-            Lower_Courtain.place(x=42, y=520), 
-            Menu.place(x=402,y=570), 
+            Lower_Courtain.place(x=78, y=590), 
+            Menu.place(x=438,y=640), 
             Ready(Day_or_Night)]))
     Menu_buttons[0].place(x=165,y=30)
 
@@ -117,8 +117,8 @@ def menu_buttons(root, canvas, menu, inst, save, load,
             Maps.Maps_order(player, Day_or_Night), 
             hml_cl(hml,cl,player,Day_or_Night), 
             canvas.pack(), menu.forget(), 
-            Lower_Courtain.place(x=42, y=520), 
-            Menu.place(x=402,y=570), menu.forget(),
+            Lower_Courtain.place(x=78, y=590), 
+            Menu.place(x=438,y=640), menu.forget(),
             Ready(Day_or_Night)])
     Menu_buttons[1].place(x=165,y=100)
 
@@ -201,13 +201,13 @@ def initialize_every_button(root, canvas, player,
             Maps.Maps_order(player, Day_or_Night),
             hml_cl(hml, cl, player, Day_or_Night), 
             Turn_On(Next_btn, Reset_btn), 
-            Ready(Day_or_Night)])
+            Ready(Day_or_Night), print("Next")])
     Next_btn.place(x=360,y=0)  
 
     Reset_btn = Button(
         Lower_Courtain, bg="Yellow", fg=Day_or_Night.fg, 
         text="Reset", width = '10', height = '1', command=lambda:[
-            Maps.Maps_order(player, Day_or_Night)])
+            Maps.Maps_order(player, Day_or_Night), print("Restart")])
     Reset_btn.place(x=360,y=26)   
 
     Menu = Button(

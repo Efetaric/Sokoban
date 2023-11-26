@@ -8,8 +8,8 @@ import Animation
 
 def position(root): #Sets the main window
 
-    width = 530
-    height = 600
+    width = 600
+    height = 700
 
     # screen width and height
     screen_width = root.winfo_screenwidth() # width of the screen
@@ -47,7 +47,8 @@ Day = Classes.Aspect(
     Mode='Sprites/Day_Mode.png',
     #Map
     Border_image="Sprites/Wall_dTop.png",
-    Border_image1="Sprites/Wall_dBottom.png", 
+    Border_image1="Sprites/Wall_dBottom.png",
+    Torch_image = "Sprites/Wall_dTorch.png",
     Obstacle_image="Sprites/Obstacle_dBush1.png", 
     Space_image="Sprites/Space_day.png", 
     Goal_image="Sprites/Goal_day.png", 
@@ -64,8 +65,9 @@ Night = Classes.Aspect(
     Mode="Sprites/Night_Mode.png",
     
     #Map
-    Border_image="Sprites/Wall_dTop.png",
-    Border_image1="Sprites/Wall_dBottom.png", 
+    Border_image="Sprites/Wall_nTop.png",
+    Border_image1="Sprites/Wall_nBottom.png",
+    Torch_image = "Sprites/Wall_nTorch0.png", 
     Obstacle_image="Sprites/Obstacle_dBush1.png", 
     Space_image="Sprites/Space_day.png", 
     Goal_image="Sprites/Goal_day.png", 
@@ -89,7 +91,9 @@ Buttons_and_Labels.initialize_every_button(
 
 ########################################################################
 Animation.Initialise_images()
+Animation.Animation_Map(root, Day_or_Night, 0)
 Animation.Animation_Player(root, Day_or_Night, User, 0)
+
 
 root.mainloop()
 

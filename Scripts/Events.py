@@ -40,17 +40,16 @@ def Restart(root, player, Day_or_Night,
         Maps.Maps_order(player, Day_or_Night), 
         Buttons_and_Labels.hml_cl(hml,cl,player,Day_or_Night), 
         Buttons_and_Labels.Turn_On(Next_btn, Reset_btn),
-        Buttons_and_Labels.Ready(Day_or_Night)])
-        
-    print("Reset")
+        Buttons_and_Labels.Ready(Day_or_Night), print("Restart")])
 
+last_key=""
 def Control(
         root, player, map, hml, which_button, 
         Next_btn, Reset_btn, i, key):
 
-    root.bind("<%s>"%key, lambda event:[
+    root.bind("<KeyPress-%s>"%key, lambda event:[
             Buttons_and_Labels.btn_pressed("%s"%which_button, player), 
             Buttons_and_Labels.Control_Logic.walk(root, player, map, hml), 
             Buttons_and_Labels.Turn_Off(map.Left_Spots, Next_btn, Reset_btn)])
-
+    root.bind("<KeyPress-%s>"%key)
 

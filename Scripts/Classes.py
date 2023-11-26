@@ -16,9 +16,10 @@ class Player:
 class Aspect: #This is for day and night mode
     def __init__(
             self, bg, fg, btn_Color, menu_Color, Mode,  
-            Border_image, Border_image1, Obstacle_image, 
-            Space_image, Goal_image, Player_image, 
-            Chest_space_image, Chest_goal_image):
+            Border_image, Border_image1, Torch_image,
+            Obstacle_image, Space_image, Goal_image, 
+            Player_image, Chest_space_image, 
+            Chest_goal_image):
         #buttons/ canvas
         self.bg=bg #canvas background
         self.fg=fg #font
@@ -29,6 +30,7 @@ class Aspect: #This is for day and night mode
             #map
         self.Border_image = PhotoImage(file=Border_image)
         self.Border_image1 = PhotoImage(file=Border_image1)
+        self.Torch_image = PhotoImage(file=Torch_image)
         self.Obstacle_image = PhotoImage(file=Obstacle_image)
         self.Space_image = PhotoImage(file=Space_image)
         self.Goal_image = PhotoImage(file=Goal_image)
@@ -55,6 +57,7 @@ class Day_Night:
         #map
         self.Border_image = Day.Border_image
         self.Border_image1 = Day.Border_image1
+        self.Torch_image = Day.Torch_image
         self.Obstacle_image = Day.Obstacle_image
         self.Space_image = Day.Space_image
         self.Goal_image = Day.Goal_image
@@ -80,6 +83,7 @@ class Day_Night:
             #map
             self.Border_image = Day.Border_image
             self.Border_image1 = Day.Border_image1
+            self.Torch_image = Day.Torch_image
             self.Obstacle_image = Day.Obstacle_image
             self.Space_image = Day.Space_image
             self.Goal_image = Day.Goal_image
@@ -101,6 +105,7 @@ class Day_Night:
             #map
             self.Border_image = Night.Border_image
             self.Border_image1 = Night.Border_image1
+            self.Torch_image = Night.Torch_image
             self.Obstacle_image = Night.Obstacle_image
             self.Space_image = Night.Space_image
             self.Goal_image = Night.Goal_image

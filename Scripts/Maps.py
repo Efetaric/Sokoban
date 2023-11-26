@@ -17,6 +17,8 @@ def Refresh(map):
                     map_matrix[j][i].config(image=map.Border_image)
                 case Var.Border1:
                     map_matrix[j][i].config(image=map.Border_image1)
+                case Var.Torch:
+                    map_matrix[j][i].config(image=map.Torch_image)
                 case Var.Obstacle:
                     map_matrix[j][i].config(image=map.Obstacle_image)
                 case Var.Space:
@@ -51,23 +53,29 @@ def Standard_map(window):
                     or (j==14 and i<15) 
                     or i==0 or i==15):  
                 map_matrix[j][i]=Label(
-                    window, height=26, width=26, 
+                    window, height=30, width=30, 
                     text=Var.Border, highlightthickness=0)
                 map_matrix[j][i].grid(row=i, column=j)
+
             
-            ##Makes the bottom layer. (Top/Bottom layer)
-            elif((i==1 and 0<j<14) or (i==16)):    
+            ##Makes the bottom layer. (Bottom layer)
+            elif((i==16)):
                 map_matrix[j][i]=Label(
-                    window, height=26, width=26, 
-                    text=Var.Border1, highlightthickness=0)
+                    window, height=30, width=30, 
+                    highlightthickness=0)
                 map_matrix[j][i].grid(row=i, column=j)
-            
+                if j%2!=0:
+                    map_matrix[j][i].config(text=Var.Torch)
+                else:
+                    map_matrix[j][i].config(text=Var.Border1)
+                        
             ##Makes the empty space
             else:                                                   
                 map_matrix[j][i]=Label(
-                    window, height=26, width=26, 
+                    window, height=30, width=30, 
                     text=Var.Space, highlightthickness=0)
                 map_matrix[j][i].grid(row=i, column=j)
+
                 
   
 
@@ -80,8 +88,12 @@ def Map1(matrix, player, map):
     map.Boxes=1
     for j in range(1,14):
         for i in range (1,15): 
+            #border
             if (i==1):
-                matrix[j][i].config(text=Var.Border1)
+                if j%2!=0:
+                    map_matrix[j][i].config(text=Var.Torch)
+                else:
+                    map_matrix[j][i].config(text=Var.Border1)
             elif (i==8 and 4<j<10):
                 matrix[j][i].config(text=Var.Space)
             else:

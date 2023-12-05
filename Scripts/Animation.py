@@ -66,11 +66,11 @@ def inb_short(
         Day_or_Night, player, 
         Player_Up, Player_Left, 
         Player_Down, Player_Right, i)
-    Maps.map_matrix[player.X+X][player.Y+Y].config(text=Var.Player, image=frame)
+    Maps.map_matrix[player.X+X][player.Y+Y].config(image=frame)
 
 #Returns the old space to normal 
 def erased(player, X, Y, old_text, old_area):
-    Maps.map_matrix[player.X+X][player.Y+Y].config(text=old_text, image=old_area)
+    Maps.map_matrix[player.X+X][player.Y+Y].config(image=old_area)
 
     
 def S2S_G2G(
@@ -261,6 +261,8 @@ def Animation_Map(root, Day_or_Night, cf):
             for i in range(1,17):
                 for j in range (1,15): 
                     if (Maps.map_matrix[j][i].cget("text")==Var.Torch):
+                        Maps.map_matrix[j][i].config(image=Player_nTorch[cf])
+                    if (Maps.map_matrix[j][i].cget("text")==Var.Goal):
                         Maps.map_matrix[j][i].config(image=Player_nTorch[cf])
             cf += 1
         else:

@@ -23,7 +23,6 @@ def walk(root, player, map, hml):
 
         print(map.Left_Spots)
         boxes_left(player, map, hml)
-        
     player.inbetween=0
 
 
@@ -35,13 +34,14 @@ def direction(root, matrix, player, X, Y, map):
     ## Checks to see if there's any box ahead
     if(matrix[player.X+X ][player.Y+Y].cget("text") in Var.Chests):
         step_over_with_box(root, matrix, player, X, Y, map)
+        
 
     #Without a box 
     ##Verifies if there are obstacles (1 Step)
     elif (matrix[player.X+X][player.Y+Y].cget("text") in Var.Collision):
         return
     else:
-        Goal_or_Space(root, player, map)
+        Goal_or_Space(root, player, map, X, Y)
         step_over(matrix, player, X, Y)
         player_position(player, X, Y)
 
@@ -51,6 +51,7 @@ def direction(root, matrix, player, X, Y, map):
 def player_position(player, X, Y): 
     player.X = player.X + X
     player.Y = player.Y + Y
+    Maps.map_matrix[player.X][player.Y].config(text=Var.Player)
 
 
 
@@ -58,6 +59,7 @@ def player_position(player, X, Y):
 def step_over(matrix, player, X, Y):
     if (matrix[player.X+X][player.Y+Y].cget("text") in Var.Goal_T):#
         player.step_over=1
+        print(player.step_over)
     elif (matrix[player.X+X][player.Y+Y].cget("text") in Var.Space_T):
         player.step_over=0
     print("step %d"%player.step_over)
@@ -70,8 +72,9 @@ def step_over_with_box(root, matrix, player, X, Y, map):
             or matrix[player.X+(X+X)][player.Y+(Y+Y)].cget("text") in Var.Chests): 
         return
     else:
-        Goal_or_Space(root, player, map)
+        Goal_or_Space(root, player, map, X, Y)
         step_over(matrix, player, X, Y)
+        
         ##Doesn't decrease left boxes when moving from goal to goal
         if (matrix[player.X+X][player.Y+Y].cget("text")==Var.CoG  
                 and (matrix[player.X+(X+X)][player.Y+(Y+Y)].cget("text")==Var.Goal)):
@@ -117,11 +120,10 @@ def step_over_with_box(root, matrix, player, X, Y, map):
         player_position(player, X, Y)
 
 
-
 ##Returns the area to normal after the user moves
-def Goal_or_Space(root, player, map):
-
+def Goal_or_Space(root, player, map, X, Y):
     if (player.step_over==1):
+        Maps.map_matrix[player.X][player.Y].config(text=Var.Goal)
         Animation.Inbetween_Order(
             root, map, player, 
             Animation.Player_dUGoal, 
@@ -135,6 +137,7 @@ def Goal_or_Space(root, player, map):
             Var.Goal, map.Goal_image)
             
     elif (player.step_over==0):
+        Maps.map_matrix[player.X][player.Y].config(text=Var.Space)
         Animation.Inbetween_Order(
             root, map, player, 
             Animation.Player_dUSpace, 

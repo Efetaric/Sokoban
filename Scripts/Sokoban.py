@@ -69,8 +69,8 @@ Night = Classes.Aspect(
     Border_image1="Sprites/Wall_nBottom.png",
     Torch_image = "Sprites/Wall_nTorch0.png", 
     Obstacle_image="Sprites/Obstacle_dBush1.png", 
-    Space_image="Sprites/Space_day.png", 
-    Goal_image="Sprites/Goal_day.png", 
+    Space_image="Sprites/Space_Night.png", 
+    Goal_image="Sprites/Goal_Night.png", 
     Player_image="Sprites/Player_dRSpace0.png", 
     Chest_space_image="Sprites/Wall_dTop.png", 
     Chest_goal_image="Sprites/Chest_dGoal.png")
@@ -93,7 +93,6 @@ Buttons_and_Labels.initialize_every_button(
 Animation.Initialise_images()
 Animation.Animation_Map(root, Day_or_Night, 0)
 Animation.Animation_Player(root, Day_or_Night, User, 0)
-
 
 root.mainloop()
 

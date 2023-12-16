@@ -4,13 +4,12 @@ from tkinter import *
 class Player:
     def __init__(
             self, level, X, Y, step_over, 
-            Button_Pressed, inbetween):
+            Button_Pressed):
         self.level = level
         self.X = X
         self.Y = Y
         self.step_over = step_over
         self.Button_Pressed = Button_Pressed
-        self.inbetween = inbetween 
 
 
 class Aspect: #This is for day and night mode

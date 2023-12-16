@@ -7,33 +7,30 @@ import Var
 #Movement and anti-collision function (main func in module)
 def walk(root, player, map, hml):
     #every press activates the inbetweens
-   
     if (map.state=="Ready"):
-        player.inbetween=1 
         print(player.Button_Pressed)
         match player.Button_Pressed:
             case "Up":
-                direction(root, Maps.map_matrix, player, 0, -1, map)
+                direction(Maps.map_matrix, player, 0, -1, map)
             case "Left":
-                direction(root, Maps.map_matrix, player, -1, 0, map)
+                direction(Maps.map_matrix, player, -1, 0, map)
             case "Down":
-                direction(root, Maps.map_matrix, player, 0, 1, map)
+                direction(Maps.map_matrix, player, 0, 1, map)
             case "Right":
-                direction(root, Maps.map_matrix, player, 1, 0, map)
+                direction(Maps.map_matrix, player, 1, 0, map)
 
         print(map.Left_Spots)
         boxes_left(player, map, hml)
-    player.inbetween=0
 
 
 
 
 
-def direction(root, matrix, player, X, Y, map):
+def direction(matrix, player, X, Y, map):
     #with a box
     ## Checks to see if there's any box ahead
     if(matrix[player.X+X ][player.Y+Y].cget("text") in Var.Chests):
-        step_over_with_box(root, matrix, player, X, Y, map)
+        step_over_with_box(matrix, player, X, Y, map)
         
 
     #Without a box 
@@ -41,7 +38,7 @@ def direction(root, matrix, player, X, Y, map):
     elif (matrix[player.X+X][player.Y+Y].cget("text") in Var.Collision):
         return
     else:
-        Goal_or_Space(root, player, map, X, Y)
+        Goal_or_Space(player, map)
         step_over(matrix, player, X, Y)
         player_position(player, X, Y)
 
@@ -65,14 +62,14 @@ def step_over(matrix, player, X, Y):
     print("step %d"%player.step_over)
     
 
-def step_over_with_box(root, matrix, player, X, Y, map):
+def step_over_with_box(matrix, player, X, Y, map):
     #With a box
     ##Verifies if there are obstacles ahead(2 Steps)
     if (matrix[player.X+(X+X)][player.Y+(Y+Y)].cget("text") in Var.Collision 
             or matrix[player.X+(X+X)][player.Y+(Y+Y)].cget("text") in Var.Chests): 
         return
     else:
-        Goal_or_Space(root, player, map, X, Y)
+        Goal_or_Space(player, map)
         step_over(matrix, player, X, Y)
         
         ##Doesn't decrease left boxes when moving from goal to goal
@@ -121,34 +118,16 @@ def step_over_with_box(root, matrix, player, X, Y, map):
 
 
 ##Returns the area to normal after the user moves
-def Goal_or_Space(root, player, map, X, Y):
+def Goal_or_Space(player, map):
     if (player.step_over==1):
         Maps.map_matrix[player.X][player.Y].config(text=Var.Goal)
-        Animation.Inbetween_Order(
-            root, map, player, 
-            Animation.Player_dUGoal, 
-            Animation.Player_dUSpace, 
-            Animation.Player_dLGoal, 
-            Animation.Player_dLSpace, 
-            Animation.Player_dRGoal, 
-            Animation.Player_dRSpace, 
-            Animation.Player_dRGoal, 
-            Animation.Player_dRSpace, 
-            Var.Goal, map.Goal_image)
+        Maps.map_matrix[player.X][player.Y].config(image=map.Goal_image)
+
             
     elif (player.step_over==0):
         Maps.map_matrix[player.X][player.Y].config(text=Var.Space)
-        Animation.Inbetween_Order(
-            root, map, player, 
-            Animation.Player_dUSpace, 
-            Animation.Player_dUGoal, 
-            Animation.Player_dLSpace, 
-            Animation.Player_dRGoal, 
-            Animation.Player_dRSpace, 
-            Animation.Player_dLGoal, 
-            Animation.Player_dRSpace, 
-            Animation.Player_dRGoal, 
-            Var.Space, map.Space_image)
+        Maps.map_matrix[player.X][player.Y].config(image=map.Space_image)
+
 
 #this function changes the number of boxes left
 #When every box is moved to its area, the control buttons MUST BE DISABLED!

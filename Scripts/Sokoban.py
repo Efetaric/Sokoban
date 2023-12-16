@@ -34,8 +34,7 @@ User = Classes.Player(
     X=1,
     Y=2, 
     step_over=0, 
-    Button_Pressed='No_Button_Pressed',
-    inbetween=0)
+    Button_Pressed='No_Button_Pressed')
 
 
 Day = Classes.Aspect(
